@@ -1,41 +1,75 @@
 import './style.css';
 
 const Score = document.querySelector('.Score') as HTMLElement;
+const HighScoreDisplay = document.querySelector('.highscore') as HTMLElement;
 const StartScreen = document.querySelector('.StartScreen') as HTMLElement;
 const GameArea = document.querySelector('.GameArea') as HTMLElement;
 
+let highScore = parseInt(localStorage.getItem('mk_car_highscore') || '0');
+HighScoreDisplay.innerHTML = `Highscore: ${highScore}`;
+
 StartScreen.addEventListener('click', Start);
 
-let Player: any = { speed: 6, Score: 0 };
+let Player: any = { speed: 8, Score: 0 };
 let keys: any = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
 
 document.addEventListener('keydown', keydown);
 document.addEventListener('keyup', keyup);
 
 function keydown(e: KeyboardEvent) {
-    if (keys[e.key] !== undefined) {
+    if (keys.hasOwnProperty(e.key)) {
         e.preventDefault();
         keys[e.key] = true;
     }
 }
 
 function keyup(e: KeyboardEvent) {
-    if (keys[e.key] !== undefined) {
+    if (keys.hasOwnProperty(e.key)) {
         e.preventDefault();
         keys[e.key] = false;
     }
 }
 
+// Mobile Controls
+const setupMobile = () => {
+    const mobileUI = document.createElement('div');
+    mobileUI.className = 'controls-mobile';
+    mobileUI.innerHTML = `
+        <div class="btn-ctrl" id="left-btn">←</div>
+        <div class="btn-ctrl" id="right-btn">→</div>
+    `;
+    document.body.appendChild(mobileUI);
+
+    const left = document.getElementById('left-btn')!;
+    const right = document.getElementById('right-btn')!;
+
+    const handleTouch = (key: string, val: boolean) => (e: TouchEvent) => {
+        e.preventDefault();
+        keys[key] = val;
+    };
+
+    left.addEventListener('touchstart', handleTouch('ArrowLeft', true));
+    left.addEventListener('touchend', handleTouch('ArrowLeft', false));
+    right.addEventListener('touchstart', handleTouch('ArrowRight', true));
+    right.addEventListener('touchend', handleTouch('ArrowRight', false));
+};
+setupMobile();
+
 function iscollide(a: HTMLElement, b: HTMLElement) {
     const aRect = a.getBoundingClientRect();
     const bRect = b.getBoundingClientRect();
-    return !((aRect.top < bRect.top) || (aRect.top > bRect.bottom) || (aRect.right < bRect.left) || (aRect.left > bRect.right));
+    return !(
+        (aRect.bottom < bRect.top) ||
+        (aRect.top > bRect.bottom) ||
+        (aRect.right < bRect.left) ||
+        (aRect.left > bRect.right)
+    );
 }
 
 function movelines() {
     let lines = document.querySelectorAll('.lines') as NodeListOf<HTMLElement>;
     lines.forEach(function (item: any) {
-        if (item.y >= 700) {
+        if (item.y >= 750) {
             item.y -= 750;
         }
         item.y += Player.speed;
@@ -46,8 +80,21 @@ function movelines() {
 function endgame() {
     Player.Start = false;
     StartScreen.classList.remove('hide');
-    StartScreen.innerHTML = " GAME OVER <br> YOUR FINAL SCORE IS " + Player.Score
-        + " <br> PRESS HERE TO START AGAIN.";
+
+    if (Player.Score > highScore) {
+        highScore = Player.Score;
+        localStorage.setItem('mk_car_highscore', highScore.toString());
+        HighScoreDisplay.innerHTML = `Highscore: ${highScore}`;
+    }
+
+    StartScreen.innerHTML = `
+        <p>
+            🔥 GAME OVER 🔥<br>
+            SCORE: ${Player.Score}<br>
+            HIGHSCORE: ${highScore}<br><br>
+            <span style="font-size: 1rem; opacity: 0.8">Click to restart</span>
+        </p>
+    `;
 }
 
 function moveenemy(car: HTMLElement) {
@@ -55,12 +102,11 @@ function moveenemy(car: HTMLElement) {
 
     enemy.forEach(function (item: any) {
         if (iscollide(car, item)) {
-            console.log('BOOM HIT');
             endgame();
         }
-        if (item.y >= 700) {
-            item.y -= 750;
-            item.style.left = Math.floor(Math.random() * 300) + "px";
+        if (item.y >= 750) {
+            item.y -= 800;
+            item.style.left = Math.floor(Math.random() * (GameArea.offsetWidth - 60)) + "px";
         }
         item.y += Player.speed;
         item.style.top = item.y + "px";
@@ -75,21 +121,20 @@ function GamePlay() {
         movelines();
         moveenemy(car);
 
-        if (keys.ArrowUp && Player.y > (road.top + 120)) { Player.y -= Player.speed; }
-        if (keys.ArrowDown && Player.y < (road.bottom - 110)) { Player.y += Player.speed; }
+        if (keys.ArrowUp && Player.y > 100) { Player.y -= Player.speed; }
+        if (keys.ArrowDown && Player.y < (road.height - 150)) { Player.y += Player.speed; }
         if (keys.ArrowLeft && Player.x > 0) { Player.x -= Player.speed; }
-        if (keys.ArrowRight && Player.x < (road.width - 100)) { Player.x += Player.speed; }
+        if (keys.ArrowRight && Player.x < (road.width - 60)) { Player.x += Player.speed; }
 
         car.style.top = Player.y + "px";
         car.style.left = Player.x + "px";
         window.requestAnimationFrame(GamePlay);
 
-        // console.log(Player.Score++); 
-        // Fixed: Incremented score is messy in original code, simplifying
         Player.Score++;
-        let ps = Player.Score - 2;
-        if (ps < 0) ps = 0;
-        Score.innerHTML = "Score : " + ps;
+        Score.innerHTML = "Score: " + Player.Score;
+
+        // Dynamic difficulty
+        if (Player.Score % 500 === 0) Player.speed += 0.5;
     }
 }
 
@@ -99,6 +144,7 @@ function Start() {
 
     Player.Start = true;
     Player.Score = 0;
+    Player.speed = 8;
     window.requestAnimationFrame(GamePlay);
 
     for (let x = 0; x < 5; x++) {
@@ -119,18 +165,15 @@ function Start() {
     for (let x = 0; x < 3; x++) {
         let enemycar = document.createElement('div') as any;
         enemycar.setAttribute('class', 'enemy');
-        enemycar.y = ((x + 1) * 300) * -1;
+        enemycar.y = ((x + 1) * 350) * -1;
         enemycar.style.top = enemycar.y + "px";
         enemycar.style.backgroundColor = randomColor();
-        enemycar.style.left = Math.floor(Math.random() * 300) + "px";
+        enemycar.style.left = Math.floor(Math.random() * (GameArea.offsetWidth - 60)) + "px";
         GameArea.appendChild(enemycar);
     }
 }
 
 function randomColor() {
-    function c() {
-        let hex = Math.floor(Math.random() * 256).toString(16);
-        return ("0" + String(hex)).substr(-2);
-    }
-    return "#" + c() + c() + c();
+    const colors = ['#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899'];
+    return colors[Math.floor(Math.random() * colors.length)];
 }
