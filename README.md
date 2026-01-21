@@ -1,26 +1,30 @@
 # 08-car-racing-game
 
-✨ Professional Repository Showcase Template
-
-## Live Deployments
-- Netlify: https://08-car-racing-game-mkazi.netlify.app
-- GitHub Pages: https://mk-knight23.github.io/08-car-racing-game/
-
-Status: 🟢 Live
-Last Updated: 2026-01-21T14:04:00+05:30
+✨ A high-octane 2D racing experience built with modern web technologies. Race against the clock, avoid obstacles, and dominate the leaderboard in this adrenaline-fueled arcade game.
 
 ## Features
-- 📱 Mobile Responsive
-- ⚡ Fast Performance
-- 🎨 Modern UI/UX
+- 🏎️ High-Speed Racing Gameplay mechanics
+- 🛣️ Procedurally Generated Track Elements
+- 📱 Responsive Controls for Mobile & Desktop
+- ⚛️ Game Logic Powered by React 18
+- ⚡ Optimized Performance with Vite 6
+
+## Tech Stack
+- **Frontend**: React 18, Tailwind CSS v4
+- **Build Tool**: Vite 6
+- **Graphics**: CSS Animations & HTML5 Canvas
+- **Icons**: Lucide React
 
 ## Quick Start
 ```bash
-git clone https://github.com/mk-knight23/08-car-racing-game.git
-cd 08-car-racing-game
 npm install
 npm run dev
 ```
 
-## License
-MIT
+## Documentation
+Additional technical details can be found in the [docs/](docs/) directory.
+
+## Live Deployment
+GitHub Pages: [Pending]
+Status: 🟡 Initializing Pipeline
+Last Updated: 2026-01-21
