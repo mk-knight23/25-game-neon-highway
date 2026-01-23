@@ -1,12 +1,10 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite'
+import tailwindcss from '@tailwindcss/vite'
 
+// https://vitejs.dev/config/
 export default defineConfig({
-    base: '/08-car-racing-game/',
-    build: {
-        outDir: 'dist',
-    },
-    server: {
-        port: 3000,
-        open: true,
-    }
-});
+    plugins: [
+        tailwindcss(),
+    ],
+    base: process.env.VERCEL || process.env.NETLIFY ? './' : '/08-car-racing-game/',
+})

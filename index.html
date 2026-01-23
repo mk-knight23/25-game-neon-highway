@@ -2,28 +2,90 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="batman-6-16.ico" />
-    <title>MK CAR GAME</title>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#020617" />
+
+    <!-- Primary Meta Tags -->
+    <title>MK Car Game | Premium Interstellar Racing</title>
+    <meta name="title" content="MK Car Game | Premium Interstellar Racing">
+    <meta name="description"
+        content="Dive into a high-octane interstellar racing experience. Built with HTML5 Canvas, TypeScript, and Tailwind v4. Developed by Kazi Musharraf.">
+    <meta name="keywords" content="racing game, canvas game, typescript game, arcade racing, mk tech, kazi musharraf">
+    <meta name="author" content="Kazi Musharraf">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mk-knight23.github.io/08-car-racing-game/">
+    <meta property="og:title" content="MK Car Game | Premium Interstellar Racing">
+    <meta property="og:description"
+        content="Experience high-speed interstellar racing in this modernized arcade classic.">
+    <meta property="og:image" content="https://mk-knight23.github.io/08-car-racing-game/car-ss.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://mk-knight23.github.io/08-car-racing-game/">
+    <meta name="twitter:title" content="MK Car Game | Premium Interstellar Racing">
+    <meta name="twitter:description"
+        content="Experience high-speed interstellar racing in this modernized arcade classic.">
+    <meta name="twitter:image" content="https://mk-knight23.github.io/08-car-racing-game/car-ss.png">
+
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "MK Car Game",
+        "operatingSystem": "Web",
+        "applicationCategory": "GameApplication",
+        "author": {
+            "@type": "Person",
+            "name": "Kazi Musharraf"
+        }
+    }
+    </script>
 </head>
 
-<body>
-    <div class="Cargame">
-        <p class="wm" style="position:fixed;right:30px;bottom: 4px;">Made By MK.TECH</p>
-        <div class="Score">
+<body class="bg-black overflow-hidden select-none touch-none">
+    <div class="Cargame min-h-screen relative overflow-hidden">
+        <p
+            class="wm hidden md:block fixed right-8 bottom-4 text-slate-500 font-bold tracking-widest text-xs opacity-50 uppercase">
+            Modernization Wave 2026 • Kazi Tech
+        </p>
+
+        <div
+            class="Score fixed top-8 left-8 p-4 bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl text-white font-black uppercase tracking-[0.2em] text-sm z-50">
+            Score: 0
         </div>
-        <div class="StartScreen">
-            <p>
-                Press here to enter the endgame <br>
-                Use arrow-keys to move<br>
-                If you hit another car you will lose
-            </p>
+
+        <div
+            class="highscore fixed top-8 right-8 p-4 bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl text-white font-black uppercase tracking-[0.2em] text-sm z-50">
+            Highscore: 0
         </div>
-        <div class="GameArea">
+
+        <div
+            class="StartScreen fixed inset-0 z-[100] flex flex-col items-center justify-center p-6 bg-slate-950/90 backdrop-blur-md cursor-pointer text-center">
+            <div
+                class="max-w-md p-10 rounded-[3rem] bg-gradient-to-br from-indigo-600 to-purple-600 shadow-2xl shadow-indigo-500/20 border border-white/10">
+                <h1 class="text-4xl font-black mb-6 tracking-tighter uppercase">Enter the Endgame</h1>
+                <p class="text-lg font-medium leading-relaxed opacity-90 mb-8">
+                    Use Arrow-Keys to navigate <br>
+                    Avoid the hazards to survive <br>
+                </p>
+                <div
+                    class="px-8 py-4 bg-white/10 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-white/20 transition-all">
+                    Initialize Thrusters
+                </div>
+            </div>
         </div>
-        <div class="highscore"> HIGHSCORE : 9999 <br>
-            CAN YOU BEAT IT !!!
+
+        <div
+            class="GameArea w-[400px] h-screen mx-auto bg-slate-900 relative border-x-4 border-slate-800 shadow-[0_0_100px_rgba(0,0,0,0.8)] overflow-hidden">
+            <!-- Canvas Simulation in DOM -->
         </div>
     </div>
     <script type="module" src="/src/main.ts"></script>

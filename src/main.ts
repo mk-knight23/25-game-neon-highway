@@ -10,6 +10,7 @@ HighScoreDisplay.innerHTML = `Highscore: ${highScore}`;
 
 StartScreen.addEventListener('click', Start);
 
+// Modernization Wave 2026
 let Player: any = { speed: 8, Score: 0 };
 let keys: any = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
 
