@@ -1,43 +1,90 @@
-# 08-car-racing-game
+# Car Racing Game
 
-✨ A high-octane 2D racing experience built with modern web technologies. Race against the clock, avoid obstacles, and dominate the leaderboard in this adrenaline-fueled arcade game.
+A fast-paced 2D vertical scrolling car racing game built with vanilla JavaScript and CSS.
 
-## Features
-- 🏎️ High-Speed Racing Gameplay mechanics
-- 🛣️ Procedurally Generated Track Elements
-- 📱 Responsive Controls for Mobile & Desktop
-- ⚛️ Game Logic Powered by React 18
-- ⚡ Optimized Performance with Vite 6
+## 🎮 How to Play
 
-## Tech Stack
-- **Frontend**: React 18, Tailwind CSS v4
+- **Start**: Click or tap the start screen
+- **Controls**: Arrow keys (Up/Down/Left/Right) or touch buttons on mobile
+- **Objective**: Avoid incoming cars and survive as long as possible
+- **Score**: Points increase with each frame survived
+- **Difficulty**: Speed increases every 500 points
+
+## ✨ Features
+
+- Smooth 60fps gameplay with requestAnimationFrame
+- 4-directional movement
+- Touch controls for mobile devices
+- High score persistence (localStorage)
+- Increasing difficulty curve
+- Responsive design
+
+## 🛠️ Tech Stack
+
+- **Language**: TypeScript
 - **Build Tool**: Vite 6
-- **Graphics**: CSS Animations & HTML5 Canvas
-- **Icons**: Lucide React
+- **Styling**: Tailwind CSS v4 + Custom CSS
+- **Renderer**: DOM-based (no canvas)
+- **Platform**: Web browser
 
-## Quick Start
+## 🚀 Quick Start
+
 ```bash
+# Install dependencies
 npm install
+
+# Start development server
 npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
-## Documentation
-- [Architecture Overview](docs/ARCHITECTURE.md)
-- [Design System](docs/DESIGN.md)
-- [Deployment Guide](docs/DEPLOY.md)
+## 📁 Project Structure
 
-## Live Deployment
-- **GitHub Pages**: [https://mk-knight23.github.io/08-car-racing-game/](https://mk-knight23.github.io/08-car-racing-game/)
-- **Status**: 🟢 Live
-- **Modernized**: 2026-01-23
+```
+25-game-js-car-racing/
+├── index.html          # Main HTML entry
+├── src/
+│   ├── main.ts         # Game logic
+│   └── style.css       # Game styling
+├── package.json
+└── vite.config.ts
+```
+
+## 🎯 Game Mechanics
+
+- **Player Car**: Red sports car, fully controllable
+- **Enemy Cars**: Random colors, spawn from top
+- **Road**: Center divider with animated dashed lines
+- **Collision**: Instant game over on impact
+- **Progression**: Speed increases every 500 points
+
+## 📱 Mobile Support
+
+Touch controls appear at the bottom of the screen on mobile devices:
+- Up/Down/Left/Right directional buttons
+- Optimized for thumb input
+
+## 🌍 Deployment
+
+Deploy to any static hosting service:
+
+```bash
+# Build first
+npm run build
+
+# Deploy dist/ folder
+```
+
+**Recommended Platforms**:
+- GitHub Pages (free)
+- Vercel (free)
+- Netlify (free)
 
 ---
-*Maintained by [Kazi Musharraf](https://github.com/mk-knight23)*
 
-## 🌐 Live Deployments
-
-- Vercel: https://08-car-racing-game.vercel.app
-- GitHub Pages: https://mk-knight23.github.io/08-car-racing-game/
-
-Status: 🟢 Deployments Live  
-Last Updated: 2026-01-23
+Built with vanilla JavaScript - no frameworks required.

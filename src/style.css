@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+:root {
+    --car-width: 50px;
+    --car-height: 90px;
+    --road-width: 400px;
+    --game-speed: 8;
+}
+
 @theme {
     --color-primary-glow: rgba(99, 102, 241, 0.1);
     --color-secondary-glow: rgba(168, 85, 247, 0.1);
@@ -9,5 +16,216 @@
     body {
         @apply bg-slate-950 text-slate-50 antialiased overflow-hidden selection:bg-indigo-500/30;
         font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+}
+
+/* Game Area */
+.GameArea {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    border-left: 4px solid #334155;
+    border-right: 4px solid #334155;
+}
+
+.GameArea::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 30px,
+        #475569 30px,
+        #475569 60px
+    );
+    transform: translateX(-50%);
+}
+
+/* Road Lines */
+.lines {
+    position: absolute;
+    width: 4px;
+    height: 80px;
+    background: #e2e8f0;
+    border-radius: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Player Car */
+.car {
+    position: absolute;
+    width: var(--car-width);
+    height: var(--car-height);
+    background: linear-gradient(180deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%);
+    border-radius: 8px 8px 4px 4px;
+    box-shadow:
+        0 4px 20px rgba(239, 68, 68, 0.4),
+        inset 0 2px 4px rgba(255, 255, 255, 0.2);
+    transition: left 0.05s ease-out, top 0.05s ease-out;
+}
+
+.car::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 5px;
+    right: 5px;
+    height: 15px;
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 4px 4px 0 0;
+}
+
+.car::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    height: 10px;
+    background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+/* Enemy Cars */
+.enemy {
+    position: absolute;
+    width: var(--car-width);
+    height: var(--car-height);
+    border-radius: 8px 8px 4px 4px;
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.3),
+        inset 0 2px 4px rgba(255, 255, 255, 0.2);
+}
+
+.enemy::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 5px;
+    right: 5px;
+    height: 15px;
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 4px 4px 0 0;
+}
+
+.enemy::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    height: 10px;
+    background: #ef4444;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+}
+
+/* Collision Effect */
+.car.collision {
+    animation: shake 0.3s ease-in-out;
+    filter: brightness(2);
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Mobile Controls */
+.controls-mobile {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    z-index: 100;
+}
+
+.btn-ctrl {
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    user-select: none;
+    touch-action: manipulation;
+    backdrop-filter: blur(10px);
+    transition: all 0.15s ease;
+}
+
+.btn-ctrl:active {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(0.95);
+}
+
+.btn-ctrl.up,
+.btn-ctrl.down {
+    display: none;
+}
+
+/* Show vertical controls on wider mobile */
+@media (min-width: 500px) and (max-width: 800px) {
+    .btn-ctrl.up,
+    .btn-ctrl.down {
+        display: flex;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .btn-ctrl.up { bottom: 110px; }
+    .btn-ctrl.down { bottom: 20px; }
+    .controls-mobile { gap: 0; }
+}
+
+/* Start Screen */
+.StartScreen.hide {
+    display: none;
+}
+
+/* Speed indicator */
+.speed-indicator {
+    position: fixed;
+    bottom: 8px;
+    left: 8px;
+    padding: 4px 12px;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    font-size: 12px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+    :root {
+        --road-width: 100%;
+    }
+    .GameArea {
+        width: 100% !important;
+        border-left: none;
+        border-right: none;
+    }
+    .Score,
+    .highscore {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    .controls-mobile {
+        display: none;
     }
 }
