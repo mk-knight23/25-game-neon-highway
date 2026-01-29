@@ -188,6 +188,13 @@ npm run build
 
 ---
 
+### Live Demo
+- GitHub Pages: <https://mk-knight23.github.io/25-Car-Racing/>
+- Vercel: [Deploy your own](https://vercel.com/new)
+- Netlify: [Deploy your own](https://app.netlify.com/start)
+
+---
+
 ## 📝 Design Notes (V2)
 
 ### Intentional Quirk: The Rubber-Band AI
@@ -209,3 +216,4 @@ Areas identified for future enhancement:
 - **High Score Names**: High scores stored locally without player name tracking
 - **Background Music**: Sound effects exist but no background music track
 - **Mobile Performance**: Canvas could be optimized for lower-end mobile devices
+
