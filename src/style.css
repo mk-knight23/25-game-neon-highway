@@ -858,3 +858,53 @@
         height: 3.5rem;
     }
 }
+
+/* === ACCESSIBILITY: REDUCED MOTION === */
+@media (prefers-reduced-motion: reduce) {
+    /* Disable animations and transitions for users who prefer reduced motion */
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    /* Reduce visual effects */
+    #game-container::before {
+        display: none;
+    }
+
+    /* Simplify button hover effects */
+    .menu-btn:hover {
+        transform: none;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    }
+}
+
+/* === ACCESSIBILITY: FOCUS INDICATORS === */
+/* Ensure keyboard focus is clearly visible for all interactive elements */
+.menu-btn:focus-visible,
+.dpad-btn:focus-visible,
+.boost-btn:focus-visible {
+    outline: 3px solid var(--neon-cyan);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 4px rgba(0, 255, 255, 0.3);
+}
+
+/* High contrast focus for better visibility */
+canvas:focus-visible {
+    outline: 3px solid var(--neon-magenta);
+    outline-offset: 2px;
+}
+
+/* Ensure focus indicators work in both light and dark modes */
+@media (forced-colors: active) {
+    .menu-btn:focus-visible,
+    .dpad-btn:focus-visible,
+    .boost-btn:focus-visible {
+        outline: 3px solid ButtonText;
+        outline-offset: 3px;
+        box-shadow: none;
+    }
+}
