@@ -228,12 +228,55 @@ Three focused additions to improve quality of life without disrupting the core e
 ### Intentionally Rejected: Volume Slider
 I considered adding a volume slider instead of a simple on/off toggle. Rejected because it adds UI complexity for minimal gain. In a fast-paced arcade game, you either want sound or you don't—fine-tuning volume during gameplay is unnecessary friction.
 
+---
+
+## 🎉 Recent Updates (V3-V5)
+
+### V3: Boost Energy Economy System
+**Why added**: Boost was previously unlimited—players could spam it constantly. This removed strategic depth and made high-score runs feel same-y.
+
+**What changed**: Boost now consumes energy (0-100). Energy regenerates slowly when not boosting. You need at least 20 energy to activate boost. The energy bar is visible in the HUD with color coding (green/orange/pink). This creates resource management decisions—boost becomes a strategic tool rather than a spam button.
+
+### V3: Organic Movement Imperfections
+**Why added**: The game felt too "robotic" with perfectly precise movement and instant enemy reactions. This made it feel AI-generated rather than handcrafted.
+
+**What changed**:
+- **Enemy hesitation**: New enemies have a random 200-500ms "reaction time" before reaching full speed
+- **Player wobble**: Subtle 0.3px jitter during movement creates organic, human-like feel
+- These intentional imperfections give the game character without affecting gameplay significantly
+
+### V4: Accessibility Improvements
+**Why added**: Games should be playable by everyone, including users with motion sensitivity or those who rely on keyboard navigation.
+
+**What changed**:
+- **Reduced motion support**: `prefers-reduced-motion` media query disables animations for sensitive users
+- **Focus indicators**: All interactive elements have visible focus states for keyboard navigation
+- **Canvas focus**: The game canvas is now focusable with proper `tabindex` and `aria-label`
+- **High contrast mode**: Support for `forced-colors: active` to improve visibility
+
+### What We Chose NOT to Add (V3-V5)
+- **Combo multiplier cap**: Combo system can reach 10x but no hard cap was added. Let skilled players exploit it—the fun is in finding broken strategies.
+- **More enemy types**: Considered adding boss enemies or special obstacles. Rejected to keep the game focused. The 5 existing types provide enough variety without bloating the design.
+- **Mobile swipe controls**: Virtual D-pad works well. Swipe gestures would be faster to implement but less precise—precision matters in a racing game.
+
 ## 🔧 Remaining Improvements
 
 Areas identified for future enhancement:
 
-- **Touch Controls**: Virtual D-pad exists but could be improved with swipe gestures
+- **Touch Controls**: Virtual D-pad exists but could be improved with haptic feedback
 - **High Score Names**: High scores stored locally without player name tracking
 - **Background Music**: Sound effects exist but no background music track
 - **Mobile Performance**: Canvas could be optimized for lower-end mobile devices
+
+---
+
+## 📋 Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| V1 | Initial | Core racing game with 3 enemy types |
+| V2 | - | Combo system, near-miss bonuses, 5 enemy types |
+| V3 | 2025-01-31 | Boost energy economy, organic movement imperfections |
+| V4 | 2025-01-31 | Reduced motion support, focus indicators, accessibility |
+| V5 | 2025-01-31 | Documentation update, verification complete |
 
