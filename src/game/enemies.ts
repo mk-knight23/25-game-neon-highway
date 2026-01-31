@@ -105,11 +105,13 @@ export function createEnemy(y: number = -100): Enemy {
     speed,
     color,
     type,
+    spawnTime: Date.now(), // V3: Track spawn for hesitation
   }
 }
 
 /**
  * Update enemy positions and behaviors
+ * V3: Added hesitation effect for human-like imperfection
  */
 export function updateEnemies(deltaTime: number): void {
   const enemies = gameState.getEnemies()
@@ -124,7 +126,17 @@ export function updateEnemies(deltaTime: number): void {
 
   for (const enemy of enemies) {
     let newX = enemy.x
-    let newY = enemy.y + enemy.speed * speedMultiplier
+    let newY = enemy.y
+
+    // V3: Human-like hesitation - enemies below y=0 have a "reaction time"
+    if (enemy.y < 0) {
+      const age = Date.now() - enemy.spawnTime
+      const hesitationTime = 200 + parseInt(enemy.id.slice(-3), 36) % 300 // 200-500ms random hesitation
+      const hesitationFactor = age < hesitationTime ? 0.2 + 0.8 * (age / hesitationTime) : 1
+      newY = enemy.y + enemy.speed * speedMultiplier * hesitationFactor
+    } else {
+      newY = enemy.y + enemy.speed * speedMultiplier
+    }
 
     // Apply enemy-specific behaviors
     if (enemy.type === 'zigzag') {

@@ -38,6 +38,7 @@ export interface Enemy {
   speed: number
   color: string
   type: 'normal' | 'fast' | 'tank' | 'zigzag' | 'shooter'
+  spawnTime: number // V3: Track spawn time for hesitation effect
 }
 
 export interface RoadLine {

@@ -51,9 +51,15 @@ export function updatePlayer(deltaTime: number): void {
     dy *= 0.707
   }
 
+  // V3: Add subtle organic wobble when moving
+  // This creates human-like imperfection - not perfectly robotic movement
+  const wobbleAmount = 0.3
+  const wobbleX = (Math.random() - 0.5) * wobbleAmount * (dx !== 0 ? 1 : 0)
+  const wobbleY = (Math.random() - 0.5) * wobbleAmount * (dy !== 0 ? 1 : 0)
+
   // Apply movement
-  let newX = player.x + dx
-  let newY = player.y + dy
+  let newX = player.x + dx + wobbleX
+  let newY = player.y + dy + wobbleY
 
   // Clamp to road bounds
   newX = Math.max(0, Math.min(newX, width - player.width))
