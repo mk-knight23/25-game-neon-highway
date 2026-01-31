@@ -5,7 +5,7 @@
 
 import { gameState } from '../core/state'
 import { checkRoadBounds } from './collision'
-import { CONFIG } from '../core/constants'
+import { CONFIG, BOOST_CONFIG } from '../core/constants'
 
 export function updatePlayer(deltaTime: number): void {
   const input = gameState.getInput()
@@ -17,7 +17,21 @@ export function updatePlayer(deltaTime: number): void {
   let speed = player.speed
   if (player.boostActive) {
     speed *= 1.5
+
+    // V3: Consume boost energy while active
+    const drainAmount = BOOST_CONFIG.drainRate * (deltaTime / 1000)
+    gameState.consumeBoostEnergy(drainAmount)
+
+    // Deactivate if energy runs out
+    if (gameState.getBoostEnergy() <= 0) {
+      gameState.setPlayerBoost(false)
+    }
+  } else {
+    // Regenerate boost energy when not boosting
+    const regenAmount = BOOST_CONFIG.regenRate * (deltaTime / 1000)
+    gameState.regenerateBoostEnergy(regenAmount)
   }
+
   if (state.slowMoActive) {
     speed *= 0.5
   }
@@ -47,9 +61,14 @@ export function updatePlayer(deltaTime: number): void {
 
   gameState.setPlayerPosition(newX, newY)
 
-  // Handle boost input
+  // V3: Handle boost input with energy check
   if (input.boost && !player.boostActive) {
-    gameState.setPlayerBoost(true)
+    if (gameState.canActivateBoost()) {
+      gameState.setPlayerBoost(true)
+    }
+  } else if (!input.boost && player.boostActive) {
+    // Allow manual boost deactivation
+    gameState.setPlayerBoost(false)
   }
 }
 

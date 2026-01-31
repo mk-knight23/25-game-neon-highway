@@ -72,3 +72,11 @@ export const STORAGE_KEYS = {
   settings: 'neon_racing_settings',
   soundEnabled: 'neon_racing_sound_enabled',
 } as const
+
+// Boost energy system - V3
+export const BOOST_CONFIG = {
+  maxEnergy: 100,
+  regenRate: 5, // per second when not boosting
+  drainRate: 25, // per second when boosting
+  minEnergyToStart: 20, // minimum energy to activate boost
+} as const

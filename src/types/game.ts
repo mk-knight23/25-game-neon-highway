@@ -26,6 +26,7 @@ export interface Player {
   speed: number
   boostActive: boolean
   boostTime: number
+  boostEnergy: number // V3: Boost energy system (0-100)
 }
 
 export interface Enemy {

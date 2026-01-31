@@ -14,7 +14,7 @@ import type {
   PowerUp,
   GameMode,
 } from '../types/game'
-import { STORAGE_KEYS, CONFIG } from './constants'
+import { STORAGE_KEYS, CONFIG, BOOST_CONFIG } from './constants'
 
 class GameStateManager {
   // Game state
@@ -64,6 +64,7 @@ class GameStateManager {
       speed: CONFIG.playerSpeed,
       boostActive: false,
       boostTime: 0,
+      boostEnergy: BOOST_CONFIG.maxEnergy,
     }
 
     this.enemies = []
@@ -203,6 +204,27 @@ class GameStateManager {
     if (active) {
       this.player.boostTime = Date.now() + 3000
     }
+  }
+
+  // V3: Boost energy management
+  public getBoostEnergy(): number {
+    return this.player.boostEnergy
+  }
+
+  public setBoostEnergy(energy: number): void {
+    this.player.boostEnergy = Math.max(0, Math.min(BOOST_CONFIG.maxEnergy, energy))
+  }
+
+  public consumeBoostEnergy(amount: number): void {
+    this.player.boostEnergy = Math.max(0, this.player.boostEnergy - amount)
+  }
+
+  public regenerateBoostEnergy(amount: number): void {
+    this.player.boostEnergy = Math.min(BOOST_CONFIG.maxEnergy, this.player.boostEnergy + amount)
+  }
+
+  public canActivateBoost(): boolean {
+    return this.player.boostEnergy >= BOOST_CONFIG.minEnergyToStart
   }
 
   // Enemy methods
@@ -347,6 +369,7 @@ class GameStateManager {
     this.player.x = 0
     this.player.y = 0
     this.player.boostActive = false
+    this.player.boostEnergy = BOOST_CONFIG.maxEnergy
 
     this.enemies = []
     this.particles = []

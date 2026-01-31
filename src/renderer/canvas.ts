@@ -4,7 +4,7 @@
  */
 
 import { gameState } from '../core/state'
-import { COLORS, RENDER_CONFIG } from '../core/constants'
+import { COLORS, RENDER_CONFIG, BOOST_CONFIG } from '../core/constants'
 import { visualEffects } from '../visual/effects'
 import { getLevelProgress } from '../game/difficulty'
 import { comboSystem } from '../game/comboSystem'
@@ -473,6 +473,39 @@ export class CanvasRenderer {
       this.ctx.textAlign = 'left'
       this.ctx.fillText(`⏱️ SLOW-MO: ${remaining}s`, 20, yOffset)
     }
+
+    // V3: Boost energy bar
+    const player = gameState.getPlayer()
+    const boostEnergy = player.boostEnergy
+    const boostBarWidth = 120
+    const boostBarHeight = 8
+    const boostBarX = 20
+    const boostBarY = canvas.height - 30
+
+    // Boost bar background
+    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.15)'
+    this.ctx.fillRect(boostBarX, boostBarY, boostBarWidth, boostBarHeight)
+
+    // Boost bar fill with color based on energy level
+    const energyPercent = boostEnergy / BOOST_CONFIG.maxEnergy
+    const boostColor: string = energyPercent < 0.3 ? COLORS.neonPink : energyPercent < 0.6 ? COLORS.neonCyan : COLORS.neonGreen
+
+    this.ctx.fillStyle = boostColor
+    this.ctx.fillRect(boostBarX, boostBarY, boostBarWidth * energyPercent, boostBarHeight)
+
+    // Glow effect when boosting
+    if (player.boostActive) {
+      this.ctx.shadowColor = boostColor
+      this.ctx.shadowBlur = 15
+      this.ctx.fillRect(boostBarX, boostBarY, boostBarWidth * energyPercent, boostBarHeight)
+      this.ctx.shadowBlur = 0
+    }
+
+    // Boost label
+    this.ctx.fillStyle = COLORS.textSecondary
+    this.ctx.font = '12px monospace'
+    this.ctx.textAlign = 'left'
+    this.ctx.fillText('BOOST', boostBarX, boostBarY - 5)
   }
 
   /**
