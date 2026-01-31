@@ -66,5 +66,9 @@ export const RENDER_CONFIG = {
 
 export const STORAGE_KEYS = {
   highScore: 'neon_racing_highscore',
+  highScoreEndless: 'neon_racing_highscore_endless',
+  highScoreTimeTrial: 'neon_racing_highscore_timetrial',
+  highScoreZen: 'neon_racing_highscore_zen',
   settings: 'neon_racing_settings',
+  soundEnabled: 'neon_racing_sound_enabled',
 } as const

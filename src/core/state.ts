@@ -33,14 +33,19 @@ class GameStateManager {
   private roadHeight: number
 
   constructor() {
-    // Load high score from storage
-    const savedHighScore = parseInt(localStorage.getItem(STORAGE_KEYS.highScore) || '0', 10)
+    // Load high scores from storage (per-mode)
+    const savedHighScores = {
+      endless: parseInt(localStorage.getItem(STORAGE_KEYS.highScoreEndless) || '0', 10),
+      timetrial: parseInt(localStorage.getItem(STORAGE_KEYS.highScoreTimeTrial) || '0', 10),
+      zen: parseInt(localStorage.getItem(STORAGE_KEYS.highScoreZen) || '0', 10),
+    }
 
     this.state = {
       current: 'menu',
       mode: 'endless',
       score: 0,
-      highScore: savedHighScore,
+      highScore: savedHighScores.endless,
+      highScores: savedHighScores,
       level: 1,
       speed: CONFIG.baseSpeed,
       distance: 0,
@@ -123,6 +128,9 @@ class GameStateManager {
   public setGameMode(mode: GameMode): void {
     this.state.mode = mode
 
+    // Update high score for selected mode
+    this.state.highScore = this.state.highScores[mode]
+
     // Set time for time trial mode
     if (mode === 'timetrial') {
       this.state.timeRemaining = 120 // 2 minutes
@@ -146,9 +154,21 @@ class GameStateManager {
   public setScore(score: number): void {
     this.state.score = score
 
-    // Update high score
-    if (score > this.state.highScore) {
+    // Update high score for current mode
+    const mode = this.state.mode
+    if (score > this.state.highScores[mode]) {
+      this.state.highScores[mode] = score
       this.state.highScore = score
+
+      // Save to appropriate storage key
+      const storageKey = mode === 'endless'
+        ? STORAGE_KEYS.highScoreEndless
+        : mode === 'timetrial'
+        ? STORAGE_KEYS.highScoreTimeTrial
+        : STORAGE_KEYS.highScoreZen
+
+      localStorage.setItem(storageKey, score.toString())
+      // Also update legacy high score for backward compatibility
       localStorage.setItem(STORAGE_KEYS.highScore, score.toString())
     }
 

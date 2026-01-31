@@ -206,13 +206,33 @@ High scores are local only. No cloud save, no account system. The tradeoff: port
 ### What I Chose NOT to Build
 No car customization. Every player drives the same red car. Modern racing games have liveries, upgrades, tuning. I didn't build any of that. The decision: equality over expression. Everyone races on identical terms. The only difference is skill.
 
+## 🎉 Additional Features (V3)
+
+Three focused additions to improve quality of life without disrupting the core experience:
+
+### Per-Mode High Scores
+**Why added**: Previously, all game modes shared a single high score. This felt unfair—Time Trial scores couldn't compete with endless runs, and Zen mode scores were meaningless comparisons.
+
+**What changed**: Each mode (Endless, Time Trial, Zen) now tracks its own high score separately. The menu displays all three scores side-by-side, giving players clear goals for each mode.
+
+### Sound Toggle
+**Why added**: Sometimes you want to play in quiet environments. Previously, sounds were always on after the first interaction.
+
+**What changed**: Added a sound toggle button in the main menu footer. Your preference is saved to localStorage, so the game remembers your choice between sessions.
+
+### Enhanced Pause Menu
+**Why added**: Pressing ESC previously just showed a "PAUSED" text with no options. You had to press ESC again to resume.
+
+**What changed**: The pause menu now shows three buttons: Resume (continue playing), Restart (start the run over), and Quit (return to main menu). It also displays your current score and level for quick reference.
+
+### Intentionally Rejected: Volume Slider
+I considered adding a volume slider instead of a simple on/off toggle. Rejected because it adds UI complexity for minimal gain. In a fast-paced arcade game, you either want sound or you don't—fine-tuning volume during gameplay is unnecessary friction.
+
 ## 🔧 Remaining Improvements
 
 Areas identified for future enhancement:
 
 - **Touch Controls**: Virtual D-pad exists but could be improved with swipe gestures
-- **Audio Volume**: No volume controls - sounds are either on or off
-- **Pause Menu**: Basic pause overlay - could add settings access during gameplay
 - **High Score Names**: High scores stored locally without player name tracking
 - **Background Music**: Sound effects exist but no background music track
 - **Mobile Performance**: Canvas could be optimized for lower-end mobile devices

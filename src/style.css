@@ -152,6 +152,14 @@
     margin-bottom: 2rem;
 }
 
+/* V3: Per-mode high scores display */
+.menu-stats-highscores {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
 .stat-item {
     display: flex;
     flex-direction: column;
@@ -169,6 +177,38 @@
     font-weight: 700;
     color: var(--neon-cyan);
     text-shadow: 0 0 20px var(--glow-cyan);
+}
+
+/* V3: Menu footer with sound toggle */
+.menu-footer {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.sound-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    color: #8888aa;
+}
+
+.sound-toggle:hover {
+    background: rgba(0, 255, 255, 0.1);
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+}
+
+.sound-icon {
+    font-size: 1rem;
 }
 
 /* === MENU BUTTONS === */
@@ -361,6 +401,119 @@
     justify-content: center;
     background: rgba(10, 10, 15, 0.95);
     backdrop-filter: blur(10px);
+}
+
+/* V3: PAUSE OVERLAY */
+.pause-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 10, 15, 0.9);
+    backdrop-filter: blur(5px);
+}
+
+.pause-content {
+    text-align: center;
+    padding: 2.5rem;
+    max-width: 400px;
+    animation: fadeIn 0.3s ease;
+}
+
+.pause-title {
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 0 0 1.5rem 0;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 30px var(--glow-cyan);
+    letter-spacing: 4px;
+}
+
+.pause-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.pause-stat {
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.pause-label {
+    display: block;
+    font-size: 0.55rem;
+    color: #6666aa;
+    letter-spacing: 2px;
+    margin-bottom: 0.25rem;
+}
+
+.pause-value {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--neon-cyan);
+}
+
+.pause-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.pause-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: 2px solid;
+    background: rgba(255, 255, 255, 0.03);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+}
+
+.pause-btn.primary {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+}
+
+.pause-btn.primary:hover {
+    background: rgba(0, 255, 255, 0.15);
+    box-shadow: 0 0 20px var(--glow-cyan);
+}
+
+.pause-btn.secondary {
+    border-color: var(--neon-purple);
+    color: var(--neon-purple);
+}
+
+.pause-btn.secondary:hover {
+    background: rgba(128, 0, 255, 0.15);
+    box-shadow: 0 0 20px var(--glow-magenta);
+}
+
+.pause-btn.danger {
+    border-color: var(--neon-pink);
+    color: var(--neon-pink);
+}
+
+.pause-btn.danger:hover {
+    background: rgba(255, 0, 128, 0.15);
+    box-shadow: 0 0 20px rgba(255, 0, 128, 0.5);
+}
+
+.pause-btn .btn-icon {
+    font-size: 1rem;
 }
 
 .gameover-content {

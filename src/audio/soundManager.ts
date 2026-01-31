@@ -1,7 +1,10 @@
 /**
  * Sound Manager
  * Web Audio API-based retro synth sounds
+ * V3: Loads sound preference from localStorage
  */
+
+import { STORAGE_KEYS } from '../core/constants'
 
 class SoundManager {
   private audioContext: AudioContext | null = null
@@ -10,6 +13,12 @@ class SoundManager {
   private volume = 0.3
 
   constructor() {
+    // Load sound preference from storage
+    const savedSound = localStorage.getItem(STORAGE_KEYS.soundEnabled)
+    if (savedSound !== null) {
+      this.enabled = savedSound === 'true'
+    }
+
     // Initialize on first user interaction
     this.init()
   }

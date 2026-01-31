@@ -71,13 +71,22 @@ function stopStateMonitoring(): void {
 
 /**
  * Handle game state changes
+ * V3: Added pause state handling
  */
 function handleStateChange(oldState: string, newState: string): void {
   switch (newState) {
     case 'playing':
       if (oldState === 'menu' || oldState === 'gameover') {
         startGameLoop(renderer!, ui!)
+      } else if (oldState === 'paused') {
+        // Resume from pause - just hide the pause overlay
+        ui!.hide()
       }
+      break
+
+    case 'paused':
+      // Show pause menu
+      ui!.showPause()
       break
 
     case 'gameover':

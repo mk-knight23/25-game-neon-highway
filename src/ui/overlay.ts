@@ -2,12 +2,13 @@
  * UI Overlay Manager
  * Handles HTML-based UI overlays for menus and game screens
  * V2: Added combo system HUD integration
+ * V3: Added per-mode high scores, audio toggle, enhanced pause menu
  */
 
 import { gameState } from '../core/state'
 import { inputHandler } from '../core/input'
 import { soundManager } from '../audio/soundManager'
-import { COLORS } from '../core/constants'
+import { COLORS, STORAGE_KEYS } from '../core/constants'
 import { comboSystem } from '../game/comboSystem'
 
 export class UIOverlay {
@@ -19,9 +20,11 @@ export class UIOverlay {
 
   /**
    * Show main menu
+   * V3: Added per-mode high scores and audio toggle
    */
   public showMenu(): void {
-    const highScore = gameState.getState().highScore
+    const highScores = gameState.getState().highScores
+    const soundEnabled = soundManager.isEnabled()
 
     this.container.innerHTML = `
       <div class="menu-overlay">
@@ -29,10 +32,18 @@ export class UIOverlay {
           <h1 class="game-title">NEON HIGHWAY</h1>
           <p class="game-subtitle">CYBERPUNK RACING</p>
 
-          <div class="menu-stats">
+          <div class="menu-stats-highscores">
             <div class="stat-item">
-              <span class="stat-label">HIGH SCORE</span>
-              <span class="stat-value">${highScore}</span>
+              <span class="stat-label">∞ ENDLESS</span>
+              <span class="stat-value">${highScores.endless}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">⏱ TIME TRIAL</span>
+              <span class="stat-value">${highScores.timetrial}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">☯ ZEN</span>
+              <span class="stat-value">${highScores.zen}</span>
             </div>
           </div>
 
@@ -80,6 +91,13 @@ export class UIOverlay {
             <span class="legend-item">🟢 Boost</span>
             <span class="legend-item">🟣 Slow-Mo</span>
           </div>
+
+          <div class="menu-footer">
+            <button class="sound-toggle" id="sound-toggle">
+              <span class="sound-icon">${soundEnabled ? '🔊' : '🔇'}</span>
+              <span class="sound-text">${soundEnabled ? 'SOUND ON' : 'SOUND OFF'}</span>
+            </button>
+          </div>
         </div>
       </div>
     `
@@ -96,6 +114,23 @@ export class UIOverlay {
       })
 
       btn.addEventListener('mouseenter', () => soundManager.playMenuHover())
+    })
+
+    // Sound toggle handler
+    const soundToggle = this.container.querySelector('#sound-toggle')
+    soundToggle?.addEventListener('click', () => {
+      const currentState = soundManager.isEnabled()
+      const newState = !currentState
+      soundManager.setEnabled(newState)
+      localStorage.setItem(STORAGE_KEYS.soundEnabled, newState.toString())
+
+      // Update button
+      const icon = soundToggle.querySelector('.sound-icon')
+      const text = soundToggle.querySelector('.sound-text')
+      if (icon) icon.textContent = newState ? '🔊' : '🔇'
+      if (text) text.textContent = newState ? 'SOUND ON' : 'SOUND OFF'
+
+      if (newState) soundManager.playMenuSelect()
     })
   }
 
@@ -184,6 +219,79 @@ export class UIOverlay {
 
     // Add hover sounds
     const buttons = this.container.querySelectorAll('.menu-btn')
+    buttons.forEach(btn => {
+      btn.addEventListener('mouseenter', () => soundManager.playMenuHover())
+    })
+  }
+
+  /**
+   * Show pause menu
+   * V3: Enhanced pause menu with resume/restart/quit options
+   */
+  public showPause(): void {
+    const state = gameState.getState()
+
+    this.container.innerHTML = `
+      <div class="pause-overlay">
+        <div class="pause-content">
+          <h1 class="pause-title">PAUSED</h1>
+
+          <div class="pause-stats">
+            <div class="pause-stat">
+              <span class="pause-label">SCORE</span>
+              <span class="pause-value">${state.score}</span>
+            </div>
+            <div class="pause-stat">
+              <span class="pause-label">LEVEL</span>
+              <span class="pause-value">${state.level}</span>
+            </div>
+            ${state.mode === 'timetrial' ? `
+            <div class="pause-stat">
+              <span class="pause-label">TIME</span>
+              <span class="pause-value">${Math.ceil(state.timeRemaining)}s</span>
+            </div>
+            ` : ''}
+          </div>
+
+          <div class="pause-buttons">
+            <button class="pause-btn primary" id="resume-btn">
+              <span class="btn-icon">▶</span>
+              <span class="btn-text">RESUME</span>
+            </button>
+            <button class="pause-btn secondary" id="restart-btn">
+              <span class="btn-icon">↻</span>
+              <span class="btn-text">RESTART</span>
+            </button>
+            <button class="pause-btn danger" id="quit-btn">
+              <span class="btn-icon">✕</span>
+              <span class="btn-text">QUIT</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    `
+
+    // Attach event listeners
+    document.getElementById('resume-btn')?.addEventListener('click', () => {
+      soundManager.playMenuSelect()
+      this.hide()
+      gameState.setGameState('playing')
+    })
+
+    document.getElementById('restart-btn')?.addEventListener('click', () => {
+      soundManager.playMenuSelect()
+      this.hide()
+      gameState.resetGame()
+      gameState.setGameState('playing')
+    })
+
+    document.getElementById('quit-btn')?.addEventListener('click', () => {
+      soundManager.playMenuSelect()
+      this.showMenu()
+    })
+
+    // Add hover sounds
+    const buttons = this.container.querySelectorAll('.pause-btn')
     buttons.forEach(btn => {
       btn.addEventListener('mouseenter', () => soundManager.playMenuHover())
     })

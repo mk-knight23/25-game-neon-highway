@@ -68,6 +68,11 @@ export interface GameStateData {
   mode: GameMode
   score: number
   highScore: number
+  highScores: {
+    endless: number
+    timetrial: number
+    zen: number
+  }
   level: number
   speed: number
   distance: number
