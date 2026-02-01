@@ -6,6 +6,7 @@
 import type { Enemy } from '../types/game'
 import { gameState } from '../core/state'
 import { CONFIG, ENEMY_COLORS } from '../core/constants'
+import { createProjectile, canShooterFire, markShooterFired } from './projectiles'
 
 const ENEMY_TYPES = ['normal', 'fast', 'tank', 'zigzag', 'shooter'] as const
 
@@ -148,6 +149,13 @@ export function updateEnemies(deltaTime: number): void {
     } else if (enemy.type === 'shooter') {
       // Shooters move slower but pulse (visual effect handled in renderer)
       newY = enemy.y + enemy.speed * 0.8 * speedMultiplier
+
+      // Fire projectiles if cooldown is ready and enemy is on screen
+      if (enemy.y > 0 && enemy.y < roadHeight * 0.7 && canShooterFire(enemy.id)) {
+        const projectile = createProjectile(enemy.x, enemy.y, enemy.width, enemy.id)
+        gameState.addProjectile(projectile)
+        markShooterFired(enemy.id)
+      }
     }
 
     // Keep within road bounds

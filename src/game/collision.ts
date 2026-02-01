@@ -7,6 +7,7 @@
 import type { Rect } from '../types/game'
 import { gameState } from '../core/state'
 import { comboSystem } from './comboSystem'
+import type { Projectile } from '../types/game'
 
 /**
  * AABB (Axis-Aligned Bounding Box) collision detection
@@ -84,6 +85,40 @@ export function checkPowerUpCollision(): { type: string; id: string } | null {
   }
 
   return null
+}
+
+/**
+ * Check if player collides with any projectile
+ */
+export function checkPlayerProjectileCollision(): boolean {
+  const player = gameState.getPlayer()
+  const projectiles = gameState.getProjectiles()
+  const state = gameState.getState()
+
+  // Shield protects from projectiles
+  if (state.shieldActive) return false
+
+  const playerRect: Rect = {
+    x: player.x + 5,
+    y: player.y + 5,
+    width: player.width - 10,
+    height: player.height - 10,
+  }
+
+  for (const projectile of projectiles) {
+    const projectileRect: Rect = {
+      x: projectile.x + 2,
+      y: projectile.y + 2,
+      width: projectile.width - 4,
+      height: projectile.height - 4,
+    }
+
+    if (checkCollision(playerRect, projectileRect)) {
+      return true
+    }
+  }
+
+  return false
 }
 
 /**

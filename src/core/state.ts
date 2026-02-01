@@ -12,6 +12,7 @@ import type {
   RoadLine,
   Particle,
   PowerUp,
+  Projectile,
   GameMode,
 } from '../types/game'
 import { STORAGE_KEYS, CONFIG, BOOST_CONFIG } from './constants'
@@ -24,6 +25,7 @@ class GameStateManager {
   private roadLines: RoadLine[]
   private particles: Particle[]
   private powerUps: PowerUp[]
+  private projectiles: Projectile[]
 
   // Input state
   private input: InputState
@@ -71,6 +73,7 @@ class GameStateManager {
     this.roadLines = []
     this.particles = []
     this.powerUps = []
+    this.projectiles = []
 
     this.input = {
       left: false,
@@ -296,6 +299,23 @@ class GameStateManager {
     this.powerUps = this.powerUps.filter(p => p.id !== id)
   }
 
+  // Projectile methods
+  public getProjectiles(): Readonly<Projectile[]> {
+    return this.projectiles
+  }
+
+  public setProjectiles(projectiles: Projectile[]): void {
+    this.projectiles = projectiles
+  }
+
+  public addProjectile(projectile: Projectile): void {
+    this.projectiles.push(projectile)
+  }
+
+  public removeProjectile(id: string): void {
+    this.projectiles = this.projectiles.filter(p => p.id !== id)
+  }
+
   // Input methods
   public setInput(key: keyof InputState, value: boolean): void {
     this.input[key] = value
@@ -374,6 +394,7 @@ class GameStateManager {
     this.enemies = []
     this.particles = []
     this.powerUps = []
+    this.projectiles = []
     this.resetInput()
   }
 

@@ -65,6 +65,17 @@ export interface PowerUp {
   active: boolean
 }
 
+export interface Projectile {
+  id: string
+  x: number
+  y: number
+  width: number
+  height: number
+  speed: number
+  color: string
+  ownerId: string // ID of the enemy that fired this projectile
+}
+
 export interface GameStateData {
   current: GameState
   mode: GameMode

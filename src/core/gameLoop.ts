@@ -4,12 +4,13 @@
  */
 
 import { gameState } from './state'
-import { checkPlayerEnemyCollision, checkPowerUpCollision } from '../game/collision'
+import { checkPlayerEnemyCollision, checkPowerUpCollision, checkPlayerProjectileCollision } from '../game/collision'
 import { updatePlayer, initializePlayer } from '../game/player'
 import { updateEnemies, initializeEnemies, updateEnemyCount } from '../game/enemies'
 import { updateRoadLines, initializeRoadLines } from '../game/road'
 import { createExplosion, createTrail, createSpeedLines, updateParticles, clearParticles, createShieldEffect, createSparkle } from '../game/particles'
 import { checkPowerUpSpawn, updatePowerUps, initializePowerUps } from '../game/powerups'
+import { updateProjectiles, initializeProjectiles } from '../game/projectiles'
 import { soundManager } from '../audio/soundManager'
 import { visualEffects, EFFECTS } from '../visual/effects'
 import { updateDifficulty, getLevelProgress } from '../game/difficulty'
@@ -43,6 +44,7 @@ export function startGameLoop(renderer: CanvasRenderer, ui: UIOverlay): void {
   initializeEnemies()
   initializeRoadLines()
   initializePowerUps()
+  initializeProjectiles()
   clearParticles()
 
   // Reset combo system
@@ -106,6 +108,9 @@ function update(deltaTime: number): void {
   checkPowerUpSpawn()
   updatePowerUps(deltaTime)
 
+  // Update projectiles
+  updateProjectiles(deltaTime)
+
   // Update power-up states
   gameState.updatePowerUpStates()
 
@@ -137,6 +142,12 @@ function update(deltaTime: number): void {
 
   // Check collisions (skip in zen mode)
   if (gameMode !== 'zen' && checkPlayerEnemyCollision()) {
+    handlePlayerDeath()
+    return
+  }
+
+  // Check projectile collisions (skip in zen mode)
+  if (gameMode !== 'zen' && checkPlayerProjectileCollision()) {
     handlePlayerDeath()
     return
   }
@@ -195,6 +206,9 @@ function render(renderer: CanvasRenderer, ui: UIOverlay): void {
 
   // Draw power-ups
   renderer.drawPowerUps()
+
+  // Draw projectiles
+  renderer.drawProjectiles()
 
   // Draw enemies
   renderer.drawEnemies()

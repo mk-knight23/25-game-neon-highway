@@ -8,6 +8,7 @@ import { COLORS, RENDER_CONFIG, BOOST_CONFIG } from '../core/constants'
 import { visualEffects } from '../visual/effects'
 import { getLevelProgress } from '../game/difficulty'
 import { comboSystem } from '../game/comboSystem'
+import type { Projectile } from '../types/game'
 
 export class CanvasRenderer {
   private ctx: CanvasRenderingContext2D
@@ -370,6 +371,62 @@ export class CanvasRenderer {
       this.ctx.textAlign = 'center'
       this.ctx.textBaseline = 'middle'
       this.ctx.fillText(icons[powerUp.type] || '⭐', x, y)
+    })
+
+    this.ctx.shadowBlur = 0
+  }
+
+  /**
+   * Draw projectiles
+   */
+  public drawProjectiles(): void {
+    const projectiles = gameState.getProjectiles()
+    const { width: roadWidth } = gameState.getRoadDimensions()
+    const roadX = (this.canvas.width - roadWidth) / 2
+    const time = Date.now() / 1000
+
+    projectiles.forEach(projectile => {
+      const x = roadX + projectile.x
+      const y = projectile.y
+
+      // Projectile glow with pulsing effect
+      const pulse = Math.sin(time * 10) * 0.3 + 0.7
+      this.ctx.shadowColor = projectile.color
+      this.ctx.shadowBlur = 15 * pulse
+
+      // Main projectile body (energy bolt shape)
+      this.ctx.fillStyle = projectile.color
+      this.ctx.beginPath()
+      this.ctx.moveTo(x + projectile.width / 2, y)
+      this.ctx.lineTo(x + projectile.width, y + projectile.height * 0.3)
+      this.ctx.lineTo(x + projectile.width, y + projectile.height * 0.7)
+      this.ctx.lineTo(x + projectile.width / 2, y + projectile.height)
+      this.ctx.lineTo(x, y + projectile.height * 0.7)
+      this.ctx.lineTo(x, y + projectile.height * 0.3)
+      this.ctx.closePath()
+      this.ctx.fill()
+
+      // Inner bright core
+      this.ctx.fillStyle = '#ffffff'
+      this.ctx.beginPath()
+      this.ctx.moveTo(x + projectile.width / 2, y + projectile.height * 0.2)
+      this.ctx.lineTo(x + projectile.width * 0.7, y + projectile.height * 0.4)
+      this.ctx.lineTo(x + projectile.width * 0.7, y + projectile.height * 0.6)
+      this.ctx.lineTo(x + projectile.width / 2, y + projectile.height * 0.8)
+      this.ctx.lineTo(x + projectile.width * 0.3, y + projectile.height * 0.6)
+      this.ctx.lineTo(x + projectile.width * 0.3, y + projectile.height * 0.4)
+      this.ctx.closePath()
+      this.ctx.fill()
+
+      // Trail effect
+      this.ctx.strokeStyle = projectile.color
+      this.ctx.lineWidth = 2
+      this.ctx.globalAlpha = 0.5
+      this.ctx.beginPath()
+      this.ctx.moveTo(x + projectile.width / 2, y)
+      this.ctx.lineTo(x + projectile.width / 2, y - 20)
+      this.ctx.stroke()
+      this.ctx.globalAlpha = 1
     })
 
     this.ctx.shadowBlur = 0
