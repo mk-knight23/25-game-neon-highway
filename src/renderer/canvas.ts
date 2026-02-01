@@ -426,7 +426,7 @@ export class CanvasRenderer {
       this.ctx.closePath()
       this.ctx.fill()
 
-      // Inner bright core
+      // Inner bright core (white center for visibility)
       this.ctx.fillStyle = '#ffffff'
       this.ctx.beginPath()
       this.ctx.moveTo(x + projectile.width / 2, y + projectile.height * 0.2)
@@ -437,6 +437,19 @@ export class CanvasRenderer {
       this.ctx.lineTo(x + projectile.width * 0.3, y + projectile.height * 0.4)
       this.ctx.closePath()
       this.ctx.fill()
+
+      // Accessibility: diagonal stripes pattern for colorblind players
+      this.ctx.strokeStyle = '#ffffff'
+      this.ctx.lineWidth = 1
+      this.ctx.globalAlpha = 0.6
+      for (let i = -2; i <= 2; i++) {
+        const offset = i * 3
+        this.ctx.beginPath()
+        this.ctx.moveTo(x + projectile.width * 0.3 + offset, y + projectile.height * 0.3)
+        this.ctx.lineTo(x + projectile.width * 0.5 + offset, y + projectile.height * 0.5)
+        this.ctx.stroke()
+      }
+      this.ctx.globalAlpha = 1
 
       // Trail effect
       this.ctx.strokeStyle = projectile.color

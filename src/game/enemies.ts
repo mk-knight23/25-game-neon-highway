@@ -158,8 +158,9 @@ export function updateEnemies(deltaTime: number): void {
         gameState.addProjectile(projectile)
         markShooterFired(enemy.id)
 
-        // Visual feedback when projectile is fired
+        // Visual feedback when projectile is fired (accessibility: visual cue for sound)
         visualEffects.shake(EFFECTS.projectileFired.shake, 5)
+        visualEffects.flash(EFFECTS.projectileFired.flash, 5)
 
         // Create muzzle flash sparkle effect
         const { width: roadWidth } = gameState.getRoadDimensions()

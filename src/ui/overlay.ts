@@ -27,40 +27,40 @@ export class UIOverlay {
     const soundEnabled = soundManager.isEnabled()
 
     this.container.innerHTML = `
-      <div class="menu-overlay">
+      <div class="menu-overlay" role="dialog" aria-labelledby="game-title" aria-modal="true">
         <div class="menu-content">
-          <h1 class="game-title">NEON HIGHWAY</h1>
+          <h1 class="game-title" id="game-title">NEON HIGHWAY</h1>
           <p class="game-subtitle">CYBERPUNK RACING</p>
 
-          <div class="menu-stats-highscores">
+          <div class="menu-stats-highscores" role="region" aria-label="High Scores">
             <div class="stat-item">
               <span class="stat-label">∞ ENDLESS</span>
-              <span class="stat-value">${highScores.endless}</span>
+              <span class="stat-value" aria-label="Endless Mode High Score: ${highScores.endless}">${highScores.endless}</span>
             </div>
             <div class="stat-item">
               <span class="stat-label">⏱ TIME TRIAL</span>
-              <span class="stat-value">${highScores.timetrial}</span>
+              <span class="stat-value" aria-label="Time Trial Mode High Score: ${highScores.timetrial}">${highScores.timetrial}</span>
             </div>
             <div class="stat-item">
               <span class="stat-label">☯ ZEN</span>
-              <span class="stat-value">${highScores.zen}</span>
+              <span class="stat-value" aria-label="Zen Mode High Score: ${highScores.zen}">${highScores.zen}</span>
             </div>
           </div>
 
-          <div class="game-modes">
+          <div class="game-modes" role="group" aria-label="Game Modes">
             <p class="mode-title">SELECT MODE</p>
             <div class="mode-buttons">
-              <button class="mode-btn" data-mode="endless">
+              <button class="mode-btn" data-mode="endless" aria-label="Start Endless Mode - Race forever, go for high score">
                 <span class="mode-icon">∞</span>
                 <span class="mode-name">ENDLESS</span>
                 <span class="mode-desc">Race forever, go for high score</span>
               </button>
-              <button class="mode-btn" data-mode="timetrial">
+              <button class="mode-btn" data-mode="timetrial" aria-label="Start Time Trial Mode - 2 minutes to score maximum points">
                 <span class="mode-icon">⏱</span>
                 <span class="mode-name">TIME TRIAL</span>
                 <span class="mode-desc">2 minutes to score maximum points</span>
               </button>
-              <button class="mode-btn" data-mode="zen">
+              <button class="mode-btn" data-mode="zen" aria-label="Start Zen Mode - No enemies, just drive and relax">
                 <span class="mode-icon">☯</span>
                 <span class="mode-name">ZEN</span>
                 <span class="mode-desc">No enemies, just drive and relax</span>
@@ -68,7 +68,7 @@ export class UIOverlay {
             </div>
           </div>
 
-          <div class="menu-controls">
+          <div class="menu-controls" role="region" aria-label="Controls Information">
             <p class="controls-title">CONTROLS</p>
             <div class="controls-grid">
               <div class="control-item">
@@ -86,14 +86,14 @@ export class UIOverlay {
             </div>
           </div>
 
-          <div class="menu-legend">
+          <div class="menu-legend" role="region" aria-label="Power-up Legend">
             <span class="legend-item">🔵 Shield</span>
             <span class="legend-item">🟢 Boost</span>
             <span class="legend-item">🟣 Slow-Mo</span>
           </div>
 
           <div class="menu-footer">
-            <button class="sound-toggle" id="sound-toggle">
+            <button class="sound-toggle" id="sound-toggle" aria-label="Toggle sound ${soundEnabled ? 'off' : 'on'}" aria-pressed="${soundEnabled}">
               <span class="sound-icon">${soundEnabled ? '🔊' : '🔇'}</span>
               <span class="sound-text">${soundEnabled ? 'SOUND ON' : 'SOUND OFF'}</span>
             </button>
