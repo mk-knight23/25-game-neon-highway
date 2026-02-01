@@ -1,7 +1,7 @@
 {
   "name": "08-car-racing-game",
   "private": false,
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Interstellar car racing game modernized with Vite 6, TypeScript, and Tailwind CSS v4.",
   "type": "module",
   "scripts": {

@@ -40,7 +40,15 @@ Immerse yourself in a dystopian future where highways pulse with neon energy. Th
 - **Fast** (yellow): 2x speed, harder to dodge
 - **Tank** (magenta): Larger, slower but worth more points
 - **Zigzag** (green): Unpredictable side-to-side movement
-- **Shooter** (red): Advanced enemies with special behavior
+- **Shooter** (red): Fires energy bolt projectiles at the player
+
+### Projectile System
+Shooter enemies fire glowing energy bolts that travel down the screen:
+- **2-second cooldown** between shots per shooter
+- **Warning indicator** (red glow) appears 800ms before firing
+- **Shield power-up** protects from projectile damage
+- Projectiles feature **diagonal stripe pattern** for colorblind accessibility
+- **Muzzle flash** and screen shake provide visual/audio feedback
 
 ## ✨ Features
 
@@ -124,8 +132,10 @@ npm run preview
 │   │   ├── road.ts        # Road animation
 │   │   ├── particles.ts   # Particle system
 │   │   ├── powerups.ts    # Power-up spawning
+│   │   ├── projectiles.ts # Projectile system (NEW in V6)
 │   │   ├── collision.ts   # Collision detection
-│   │   └── difficulty.ts  # Difficulty scaling
+│   │   ├── difficulty.ts  # Difficulty scaling
+│   │   └── comboSystem.ts # Combo multiplier system
 │   ├── audio/
 │   │   └── soundManager.ts # Sound synthesis
 │   ├── visual/
@@ -254,7 +264,19 @@ I considered adding a volume slider instead of a simple on/off toggle. Rejected 
 - **Canvas focus**: The game canvas is now focusable with proper `tabindex` and `aria-label`
 - **High contrast mode**: Support for `forced-colors: active` to improve visibility
 
-### What We Chose NOT to Add (V3-V5)
+### V6: Shooter Projectile System
+**Why added**: The "shooter" enemy type existed but had no unique behavior—it was just a reskin of normal enemies. This made the 5 enemy types feel shallow.
+
+**What changed**:
+- **Projectile system**: Shooter enemies now fire glowing energy bolt projectiles at the player
+- **Warning indicators**: 800ms before firing, a red glow appears above the shooter (fair warning)
+- **Cooldown system**: Each shooter has a 2-second cooldown between shots
+- **Visual feedback**: Muzzle flash sparkles and screen shake when projectiles fire
+- **Near-miss effects**: Sparkle effects when projectiles barely miss the player
+- **Colorblind accessibility**: Projectiles have diagonal white stripe patterns (visible beyond color)
+- **Shield protection**: Shield power-up blocks projectiles (maintains power-up value)
+
+### What We Chose NOT to Add (V3-V6)
 - **Combo multiplier cap**: Combo system can reach 10x but no hard cap was added. Let skilled players exploit it—the fun is in finding broken strategies.
 - **More enemy types**: Considered adding boss enemies or special obstacles. Rejected to keep the game focused. The 5 existing types provide enough variety without bloating the design.
 - **Mobile swipe controls**: Virtual D-pad works well. Swipe gestures would be faster to implement but less precise—precision matters in a racing game.
@@ -279,4 +301,5 @@ Areas identified for future enhancement:
 | V3 | 2025-01-31 | Boost energy economy, organic movement imperfections |
 | V4 | 2025-01-31 | Reduced motion support, focus indicators, accessibility |
 | V5 | 2025-01-31 | Documentation update, verification complete |
+| V6 | 2025-02-01 | **Projectile system**: Shooter enemies fire energy bolts, warning indicators, visual feedback, ARIA accessibility improvements |
 
