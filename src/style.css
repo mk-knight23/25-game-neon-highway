@@ -17,9 +17,28 @@
         --dark-bg: #0a0a0f;
         --darker-bg: #050508;
         --road-color: #12121a;
+        --text-primary: #ffffff;
+        --text-secondary: #8888aa;
         --glow-cyan: rgba(0, 255, 255, 0.6);
         --glow-magenta: rgba(255, 0, 255, 0.6);
         --glow-blue: rgba(0, 102, 255, 0.6);
+    }
+
+    :root[data-theme="light"] {
+        --neon-cyan: #008888;
+        --neon-magenta: #880088;
+        --neon-blue: #0044aa;
+        --neon-pink: #aa0044;
+        --neon-purple: #4400aa;
+        --neon-green: #008844;
+        --dark-bg: #f0f0f5;
+        --darker-bg: #e0e0e8;
+        --road-color: #d0d0d8;
+        --text-primary: #0a0a0f;
+        --text-secondary: #444466;
+        --glow-cyan: rgba(0, 136, 136, 0.2);
+        --glow-magenta: rgba(136, 0, 136, 0.2);
+        --glow-blue: rgba(0, 68, 170, 0.2);
     }
 
     * {
@@ -32,8 +51,9 @@
         overflow: hidden;
         background: var(--dark-bg);
         font-family: 'Courier New', 'Monaco', monospace;
-        color: #ffffff;
+        color: var(--text-primary);
         -webkit-font-smoothing: antialiased;
+        transition: background 0.3s ease, color 0.3s ease;
     }
 
     #game-container {

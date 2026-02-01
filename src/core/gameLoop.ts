@@ -15,6 +15,8 @@ import { soundManager } from '../audio/soundManager'
 import { visualEffects, EFFECTS } from '../visual/effects'
 import { updateDifficulty, getLevelProgress } from '../game/difficulty'
 import { comboSystem } from '../game/comboSystem'
+import { weatherSystem } from '../game/weather'
+import { ghostSystem } from '../game/ghost'
 import type { CanvasRenderer } from '../renderer/canvas'
 import type { UIOverlay } from '../ui/overlay'
 
@@ -49,6 +51,9 @@ export function startGameLoop(renderer: CanvasRenderer, ui: UIOverlay): void {
 
   // Reset combo system
   comboSystem.reset()
+
+  // Start Ghost recording
+  ghostSystem.startRecording()
 
   lastTime = performance.now()
   accumulator = 0
@@ -134,6 +139,12 @@ function update(deltaTime: number): void {
 
   // Update combo system
   comboSystem.update(deltaTime)
+
+  // Update weather
+  weatherSystem.update()
+
+  // Record Ghost frame
+  ghostSystem.recordFrame()
 
   // Create shield effect
   if (stateData.shieldActive && Math.random() < 0.1) {
@@ -258,13 +269,19 @@ function handlePlayerDeath(): void {
     50
   )
 
-  // Save high score
-  if (state.score > state.highScore) {
-    localStorage.setItem('neon_racing_highscore', state.score.toString())
-  }
+  // Stop Ghost recording
+  const ghostData = ghostSystem.stopRecording()
 
-  // Play game over sound after explosion
-  setTimeout(() => soundManager.playGameOver(), 300)
+  // Submit score to backend
+  fetch('http://localhost:3001/api/scores', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      player: 'Anonymous Racer',
+      score: state.score,
+      ghostData: ghostData
+    })
+  }).catch(err => console.error('Failed to submit score:', err))
 
   // Set game over state
   gameState.setGameState('gameover')

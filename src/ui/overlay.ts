@@ -97,6 +97,10 @@ export class UIOverlay {
               <span class="sound-icon">${soundEnabled ? '🔊' : '🔇'}</span>
               <span class="sound-text">${soundEnabled ? 'SOUND ON' : 'SOUND OFF'}</span>
             </button>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Light/Dark Mode">
+              <span class="theme-icon">🌓</span>
+              <span class="theme-text">THEME</span>
+            </button>
           </div>
         </div>
       </div>
@@ -131,6 +135,16 @@ export class UIOverlay {
       if (text) text.textContent = newState ? 'SOUND ON' : 'SOUND OFF'
 
       if (newState) soundManager.playMenuSelect()
+    })
+
+    // Theme toggle handler
+    const themeToggle = this.container.querySelector('#theme-toggle')
+    themeToggle?.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark'
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
+      document.documentElement.setAttribute('data-theme', newTheme)
+      localStorage.setItem('neon_highway_theme', newTheme)
+      soundManager.playMenuSelect()
     })
   }
 
@@ -328,7 +342,11 @@ export class UIOverlay {
     }
 
     if (scoreEl) scoreEl.textContent = state.score.toString()
-    if (speedEl) speedEl.textContent = `SPD: ${state.speed.toFixed(1)}`
+
+    // V5: Added human touch - speedometer jitter
+    const jitter = state.speed > 18 ? (Math.random() - 0.5) * 2 : 0
+    if (speedEl) speedEl.textContent = `SPD: ${(state.speed + jitter).toFixed(1)}`
+
     if (levelEl) levelEl.textContent = `LVL: ${state.level}`
     if (highScoreEl) highScoreEl.textContent = `BEST: ${state.highScore}`
 

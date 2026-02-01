@@ -1,8 +1,8 @@
 {
-  "name": "08-car-racing-game",
+  "name": "25-game-neon-highway",
   "private": false,
-  "version": "2.2.0",
-  "description": "Interstellar car racing game modernized with Vite 6, TypeScript, and Tailwind CSS v4.",
+  "version": "3.0.0",
+  "description": "A Cyber-Noir racing experience with persistent ghost systems and dynamic weather.",
   "type": "module",
   "scripts": {
     "lint": "eslint .",
@@ -24,9 +24,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mk-knight23/08-car-racing-game.git"
+    "url": "git+https://github.com/mk-knight23/25-game-neon-highway.git"
   },
-  "homepage": "https://mk-knight23.github.io/08-car-racing-game/",
   "dependencies": {
     "clsx": "^2.1.1",
     "tailwind-merge": "^2.6.0"

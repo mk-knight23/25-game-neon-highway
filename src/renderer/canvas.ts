@@ -9,6 +9,8 @@ import { visualEffects } from '../visual/effects'
 import { getLevelProgress } from '../game/difficulty'
 import { comboSystem } from '../game/comboSystem'
 import { getShooterChargeProgress } from '../game/projectiles'
+import { weatherSystem } from '../game/weather'
+import { ghostSystem } from '../game/ghost'
 import type { Projectile } from '../types/game'
 
 export class CanvasRenderer {
@@ -43,6 +45,9 @@ export class CanvasRenderer {
     // Clear with background color
     this.ctx.fillStyle = COLORS.darkBg
     this.ctx.fillRect(-10, -10, this.canvas.width + 20, this.canvas.height + 20)
+
+    // Draw weather background effects (fog)
+    weatherSystem.draw(this.ctx, this.canvas.width, this.canvas.height)
   }
 
   /**
@@ -632,6 +637,9 @@ export class CanvasRenderer {
       this.ctx.fillStyle = `rgba(255, 255, 255, ${flashIntensity})`
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
     }
+
+    // Draw foreground weather effects (rain)
+    weatherSystem.draw(this.ctx, this.canvas.width, this.canvas.height)
   }
 }
 
