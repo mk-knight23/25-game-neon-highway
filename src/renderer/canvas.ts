@@ -8,6 +8,7 @@ import { COLORS, RENDER_CONFIG, BOOST_CONFIG } from '../core/constants'
 import { visualEffects } from '../visual/effects'
 import { getLevelProgress } from '../game/difficulty'
 import { comboSystem } from '../game/comboSystem'
+import { getShooterChargeProgress } from '../game/projectiles'
 import type { Projectile } from '../types/game'
 
 export class CanvasRenderer {
@@ -274,6 +275,25 @@ export class CanvasRenderer {
         this.ctx.moveTo(x + enemy.width / 2 - reticleSize - 5, reticleY)
         this.ctx.lineTo(x + enemy.width / 2 + reticleSize + 5, reticleY)
         this.ctx.stroke()
+
+        // Charging warning indicator
+        const chargeProgress = getShooterChargeProgress(enemy.id)
+        if (chargeProgress > 0) {
+          const warningY = y - 40
+          const warningSize = 15 + chargeProgress * 10
+          this.ctx.strokeStyle = `rgba(255, 0, 102, ${chargeProgress})`
+          this.ctx.lineWidth = 2
+          this.ctx.beginPath()
+          this.ctx.arc(x + enemy.width / 2, warningY, warningSize, 0, Math.PI * 2)
+          this.ctx.stroke()
+
+          // Warning glow
+          this.ctx.shadowColor = '#ff0066'
+          this.ctx.shadowBlur = 20 * chargeProgress
+          this.ctx.fillStyle = `rgba(255, 0, 102, ${chargeProgress * 0.5})`
+          this.ctx.fill()
+          this.ctx.shadowBlur = 0
+        }
       } else {
         // Standard design
         this.ctx.fillStyle = enemy.color

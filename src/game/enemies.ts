@@ -7,6 +7,8 @@ import type { Enemy } from '../types/game'
 import { gameState } from '../core/state'
 import { CONFIG, ENEMY_COLORS } from '../core/constants'
 import { createProjectile, canShooterFire, markShooterFired } from './projectiles'
+import { visualEffects, EFFECTS } from '../visual/effects'
+import { createSparkle } from './particles'
 
 const ENEMY_TYPES = ['normal', 'fast', 'tank', 'zigzag', 'shooter'] as const
 
@@ -155,6 +157,19 @@ export function updateEnemies(deltaTime: number): void {
         const projectile = createProjectile(enemy.x, enemy.y, enemy.width, enemy.id)
         gameState.addProjectile(projectile)
         markShooterFired(enemy.id)
+
+        // Visual feedback when projectile is fired
+        visualEffects.shake(EFFECTS.projectileFired.shake, 5)
+
+        // Create muzzle flash sparkle effect
+        const { width: roadWidth } = gameState.getRoadDimensions()
+        const roadX = (500 - roadWidth) / 2 // Approximate road offset
+        for (let i = 0; i < 5; i++) {
+          createSparkle(
+            enemy.x + enemy.width / 2 + (Math.random() - 0.5) * 20,
+            enemy.y + enemy.height + (Math.random() - 0.5) * 10
+          )
+        }
       }
     }
 

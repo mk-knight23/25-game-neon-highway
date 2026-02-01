@@ -89,4 +89,6 @@ export const EFFECTS = {
   boost: { shake: 3, flash: 0.1 },
   levelUp: { shake: 10, flash: 0.4 },
   smallHit: { shake: 5, flash: 0.15 },
+  projectileFired: { shake: 3, flash: 0.1 },
+  projectileNearMiss: { shake: 2, flash: 0 },
 } as const

@@ -11,6 +11,7 @@ const PROJECTILE_SPEED = 12
 const PROJECTILE_SIZE = 8
 const PROJECTILE_COLOR = COLORS.neonPink
 const SHOOT_COOLDOWN = 2000 // ms between shots
+const WARNING_TIME = 800 // ms before shot to show warning
 
 // Track last shot time for each shooter
 const shooterLastShot = new Map<string, number>()
@@ -48,6 +49,22 @@ export function canShooterFire(enemyId: string): boolean {
 }
 
 /**
+ * Check if a shooter is about to fire (for warning indicator)
+ * Returns progress 0-1 where 1 means about to fire
+ */
+export function getShooterChargeProgress(enemyId: string): number {
+  const now = Date.now()
+  const lastShot = shooterLastShot.get(enemyId) || 0
+  const timeSinceShot = now - lastShot
+  const timeUntilFire = SHOOT_COOLDOWN - timeSinceShot
+
+  if (timeUntilFire < WARNING_TIME && timeUntilFire > 0) {
+    return 1 - (timeUntilFire / WARNING_TIME)
+  }
+  return 0
+}
+
+/**
  * Mark a shooter as having fired
  */
 export function markShooterFired(enemyId: string): void {
@@ -61,11 +78,13 @@ export function updateProjectiles(deltaTime: number): void {
   const projectiles = gameState.getProjectiles()
   const { height: roadHeight } = gameState.getRoadDimensions()
   const state = gameState.getState()
+  const player = gameState.getPlayer()
 
   // Calculate effective speed
   const speedMultiplier = state.slowMoActive ? 0.5 : 1
 
   const updatedProjectiles: Projectile[] = []
+  let createdNearMissEffect = false
 
   for (const projectile of projectiles) {
     let newY = projectile.y + projectile.speed * speedMultiplier
@@ -73,6 +92,23 @@ export function updateProjectiles(deltaTime: number): void {
     // Remove projectile if it goes off screen
     if (newY > roadHeight + 100) {
       continue
+    }
+
+    // Check for near-miss effect (projectile passes close to player)
+    if (!createdNearMissEffect && !state.shieldActive) {
+      const dx = Math.abs((projectile.x + projectile.width / 2) - (player.x + player.width / 2))
+      const dy = Math.abs(projectile.y - player.y)
+      if (dy < 30 && dx < 60 && dx > 20) {
+        // Near miss - create sparkle effect
+        const { createSparkle } = require('./particles')
+        for (let i = 0; i < 5; i++) {
+          createSparkle(
+            projectile.x + projectile.width / 2 + (Math.random() - 0.5) * 30,
+            projectile.y + (Math.random() - 0.5) * 30
+          )
+        }
+        createdNearMissEffect = true
+      }
     }
 
     updatedProjectiles.push({ ...projectile, y: newY })
