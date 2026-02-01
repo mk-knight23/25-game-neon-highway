@@ -4,6 +4,17 @@
 
 Neon Highway is a moody, pulse-pounding racer set in a rain-slicked futuristic cityscape. It's not just about speed; it's about the ghost of your past self and the unforgiving elements.
 
+---
+
+## 🎮 Live Demos
+
+| Platform | URL |
+|----------|-----|
+| **Vercel** | [25-game-neon-highway.vercel.app](https://25-game-neon-highway.vercel.app) |
+| **Render** | [two5-game-neon-highway.onrender.com](https://two5-game-neon-highway.onrender.com) |
+
+---
+
 ## 🌟 Features
 - **Ghost Mode**: Race against your previous best performances.
 - **Dynamic Weather**: Rain and fog systems that affect car handling.
@@ -13,10 +24,9 @@ Neon Highway is a moody, pulse-pounding racer set in a rain-slicked futuristic c
 - **Dual Themes**: Fully supported Light and Dark modes.
 
 ## 🛠️ Tech Stack
-- **Frontend**: React 19, Vite 6, TypeScript, Tailwind CSS v4
+- **Frontend**: TypeScript, Vite 6, Tailwind CSS v4
 - **Backend**: Node.js, Express (Lightweight Persistence)
 - **Graphics**: HTML5 Canvas API with custom Bloom FX
-- **Animations**: Framer Motion & CSS Variables
 
 ## 🚀 Getting Started
 
@@ -40,4 +50,4 @@ Detailed technical notes can be found in the [`/docs`](./docs) folder:
 - **Cyber-Noir Aesthetic**: Designed with a deliberate "rough" edge to avoid looking AI-generated.
 
 ---
-*Made by MK - Built for the Edge.*
+*Made by MK — Musharraf Kazi*
