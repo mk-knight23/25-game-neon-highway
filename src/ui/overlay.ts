@@ -87,18 +87,18 @@ export class UIOverlay {
           </div>
 
           <div class="menu-legend" role="region" aria-label="Power-up Legend">
-            <span class="legend-item">🔵 Shield</span>
-            <span class="legend-item">🟢 Boost</span>
-            <span class="legend-item">🟣 Slow-Mo</span>
+            <span class="legend-item icon-shield" aria-label="Shield Power-up">SHIELD</span>
+            <span class="legend-item icon-boost" aria-label="Boost Power-up">BOOST</span>
+            <span class="legend-item icon-slowmo" aria-label="Slow-Mo Power-up">SLOW-MO</span>
           </div>
 
           <div class="menu-footer">
             <button class="sound-toggle" id="sound-toggle" aria-label="Toggle sound ${soundEnabled ? 'off' : 'on'}" aria-pressed="${soundEnabled}">
-              <span class="sound-icon">${soundEnabled ? '🔊' : '🔇'}</span>
+              <span class="sound-icon icon-sound-${soundEnabled ? 'on' : 'off'}">${soundEnabled ? '▶' : '◾'}</span>
               <span class="sound-text">${soundEnabled ? 'SOUND ON' : 'SOUND OFF'}</span>
             </button>
             <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Light/Dark Mode">
-              <span class="theme-icon">🌓</span>
+              <span class="theme-icon">◑</span>
               <span class="theme-text">THEME</span>
             </button>
           </div>
@@ -128,10 +128,13 @@ export class UIOverlay {
       soundManager.setEnabled(newState)
       localStorage.setItem(STORAGE_KEYS.soundEnabled, newState.toString())
 
-      // Update button
+      // Update button - No emoji, use text symbol
       const icon = soundToggle.querySelector('.sound-icon')
       const text = soundToggle.querySelector('.sound-text')
-      if (icon) icon.textContent = newState ? '🔊' : '🔇'
+      if (icon) {
+        icon.textContent = newState ? '▶' : '◾'
+        icon.className = `sound-icon icon-sound-${newState ? 'on' : 'off'}`
+      }
       if (text) text.textContent = newState ? 'SOUND ON' : 'SOUND OFF'
 
       if (newState) soundManager.playMenuSelect()
@@ -197,7 +200,7 @@ export class UIOverlay {
 
           ${isNewHighScore ? `
             <div class="new-highscore">
-              <span class="trophy">🏆</span>
+              <span class="trophy" aria-label="Trophy">★</span>
               <span class="new-record">NEW RECORD!</span>
             </div>
           ` : `
@@ -401,21 +404,22 @@ export class UIOverlay {
   }
 
   /**
-   * Show power-up notification
+   * Show power-up notification - Design System compliant (no emoji)
    */
   public showPowerUpNotification(type: string): void {
     const notification = document.createElement('div')
     notification.className = `powerup-notification powerup-${type}`
 
-    const icons: Record<string, string> = {
-      shield: '🛡️',
+    // Use text symbols instead of emojis (Design System requirement)
+    const iconSymbols: Record<string, string> = {
+      shield: '◈',
       boost: '⚡',
-      slowmo: '⏱️',
-      magnet: '🧲',
+      slowmo: '⏱',
+      magnet: '◎',
     }
 
     notification.innerHTML = `
-      <span class="powerup-icon">${icons[type] || '⭐'}</span>
+      <span class="powerup-icon">${iconSymbols[type] || '★'}</span>
       <span class="powerup-name">${type.toUpperCase()}</span>
     `
 

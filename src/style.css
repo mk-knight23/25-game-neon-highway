@@ -1,44 +1,70 @@
 /**
  * Neon Highway Racing
  * Futuristic Cyberpunk Theme Styles
+ * Design System: Cyberpunk UI (Purple + Rose)
  */
 
 @import "tailwindcss";
 
-/* === NEON CYBERPUNK THEME === */
+/* Google Fonts Import - Design System */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+/* === DESIGN SYSTEM: CYBERPUNK UI === */
 @layer base {
     :root {
-        --neon-cyan: #00ffff;
-        --neon-magenta: #ff00ff;
-        --neon-blue: #0066ff;
-        --neon-pink: #ff0080;
-        --neon-purple: #8000ff;
-        --neon-green: #00ff80;
-        --dark-bg: #0a0a0f;
-        --darker-bg: #050508;
-        --road-color: #12121a;
-        --text-primary: #ffffff;
-        --text-secondary: #8888aa;
-        --glow-cyan: rgba(0, 255, 255, 0.6);
-        --glow-magenta: rgba(255, 0, 255, 0.6);
-        --glow-blue: rgba(0, 102, 255, 0.6);
+        /* Design System Colors */
+        --color-primary: #7C3AED;
+        --color-secondary: #A78BFA;
+        --color-cta: #F43F5E;
+        --color-background: #0F0F23;
+        --color-text: #E2E8F0;
+
+        /* Legacy color aliases (for compatibility) */
+        --neon-cyan: var(--color-secondary);
+        --neon-magenta: var(--color-cta);
+        --neon-blue: #8B5CF6;
+        --neon-pink: var(--color-cta);
+        --neon-purple: var(--color-primary);
+        --neon-green: #10B981;
+
+        /* Backgrounds */
+        --dark-bg: var(--color-background);
+        --darker-bg: #0a0a18;
+        --road-color: #1a1a2e;
+
+        /* Text */
+        --text-primary: var(--color-text);
+        --text-secondary: #94A3B8;
+
+        /* Glows */
+        --glow-primary: rgba(124, 58, 237, 0.6);
+        --glow-secondary: rgba(167, 139, 250, 0.5);
+        --glow-cta: rgba(244, 63, 94, 0.6);
     }
 
+    /* Light mode - Design System compliant with proper contrast */
     :root[data-theme="light"] {
-        --neon-cyan: #008888;
-        --neon-magenta: #880088;
-        --neon-blue: #0044aa;
-        --neon-pink: #aa0044;
-        --neon-purple: #4400aa;
-        --neon-green: #008844;
-        --dark-bg: #f0f0f5;
-        --darker-bg: #e0e0e8;
-        --road-color: #d0d0d8;
-        --text-primary: #0a0a0f;
-        --text-secondary: #444466;
-        --glow-cyan: rgba(0, 136, 136, 0.2);
-        --glow-magenta: rgba(136, 0, 136, 0.2);
-        --glow-blue: rgba(0, 68, 170, 0.2);
+        --color-primary: #7C3AED;
+        --color-secondary: #8B5CF6;
+        --color-cta: #E11D48;
+        --color-background: #F1F5F9;
+        --color-text: #0F172A;
+
+        /* Legacy aliases */
+        --neon-cyan: var(--color-secondary);
+        --neon-magenta: var(--color-cta);
+        --neon-blue: #6366F1;
+        --neon-pink: var(--color-cta);
+        --neon-purple: var(--color-primary);
+
+        --dark-bg: var(--color-background);
+        --darker-bg: #E2E8F0;
+        --road-color: #CBD5E1;
+        --text-primary: var(--color-text);
+        --text-secondary: #475569;
+        --glow-primary: rgba(124, 58, 237, 0.3);
+        --glow-secondary: rgba(139, 92, 246, 0.25);
+        --glow-cta: rgba(225, 29, 72, 0.3);
     }
 
     * {
@@ -50,7 +76,8 @@
         padding: 0;
         overflow: hidden;
         background: var(--dark-bg);
-        font-family: 'Courier New', 'Monaco', monospace;
+        /* Design System Typography */
+        font-family: 'VT323', 'Courier New', monospace;
         color: var(--text-primary);
         -webkit-font-smoothing: antialiased;
         transition: background 0.3s ease, color 0.3s ease;
@@ -92,10 +119,10 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow:
-        0 0 60px rgba(0, 255, 255, 0.1),
-        0 0 100px rgba(255, 0, 255, 0.05),
+        0 0 60px rgba(124, 58, 237, 0.15),
+        0 0 100px rgba(244, 63, 94, 0.1),
         inset 0 0 60px rgba(0, 0, 0, 0.5);
-    border: 2px solid rgba(0, 255, 255, 0.3);
+    border: 2px solid rgba(124, 58, 237, 0.4);
 }
 
 #game-canvas {
@@ -142,18 +169,59 @@
     font-size: 3rem;
     font-weight: 900;
     margin: 0 0 0.5rem 0;
-    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta));
+    /* Design System: Press Start 2P for headings */
+    font-family: 'Press Start 2P', cursive;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-cta));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-shadow: 0 0 60px var(--glow-cyan);
+    text-shadow: 0 0 60px var(--glow-primary);
     letter-spacing: 4px;
     animation: titleGlow 2s ease-in-out infinite alternate;
 }
 
 @keyframes titleGlow {
-    from { filter: drop-shadow(0 0 20px var(--glow-cyan)); }
-    to { filter: drop-shadow(0 0 40px var(--glow-magenta)); }
+    from { filter: drop-shadow(0 0 20px var(--glow-primary)); }
+    to { filter: drop-shadow(0 0 40px var(--glow-cta)); }
+}
+
+/* Icon classes for menu legend (Design System - no emojis) */
+.icon-shield,
+.icon-boost,
+.icon-slowmo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+}
+
+.icon-shield::before {
+    content: '◈';
+    color: var(--neon-blue);
+    margin-right: 0.25rem;
+}
+
+.icon-boost::before {
+    content: '⚡';
+    color: var(--neon-green);
+    margin-right: 0.25rem;
+}
+
+.icon-slowmo::before {
+    content: '⏱';
+    color: var(--neon-purple);
+    margin-right: 0.25rem;
+}
+
+/* Sound icon states */
+.icon-sound-on {
+    color: var(--neon-green);
+}
+
+.icon-sound-off {
+    color: var(--text-secondary);
 }
 
 .game-subtitle {
@@ -195,8 +263,8 @@
 .stat-value {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--neon-cyan);
-    text-shadow: 0 0 20px var(--glow-cyan);
+    color: var(--color-secondary);
+    text-shadow: 0 0 20px var(--glow-secondary);
 }
 
 /* V3: Menu footer with sound toggle */
@@ -222,9 +290,9 @@
 }
 
 .sound-toggle:hover {
-    background: rgba(0, 255, 255, 0.1);
-    border-color: var(--neon-cyan);
-    color: var(--neon-cyan);
+    background: rgba(124, 58, 237, 0.15);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
 }
 
 .sound-icon {
@@ -239,11 +307,11 @@
     font-weight: 700;
     letter-spacing: 4px;
     text-transform: uppercase;
-    border: 2px solid var(--neon-cyan);
-    background: rgba(0, 255, 255, 0.1);
-    color: var(--neon-cyan);
+    border: 2px solid var(--color-primary);
+    background: rgba(124, 58, 237, 0.15);
+    color: var(--color-primary);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     position: relative;
     overflow: hidden;
 }
@@ -252,9 +320,9 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta));
+    background: linear-gradient(135deg, var(--color-primary), var(--color-cta));
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.2s ease;
 }
 
 .menu-btn .btn-text {
@@ -267,7 +335,7 @@
 }
 
 .menu-btn:hover {
-    box-shadow: 0 0 30px var(--glow-cyan);
+    box-shadow: 0 0 30px var(--glow-primary);
     transform: translateY(-2px);
 }
 
@@ -276,17 +344,17 @@
 }
 
 .menu-btn.secondary {
-    border-color: var(--neon-purple);
-    color: var(--neon-purple);
-    background: rgba(128, 0, 255, 0.1);
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+    background: rgba(167, 139, 250, 0.1);
 }
 
 .menu-btn.secondary:hover::before {
-    background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+    background: linear-gradient(135deg, var(--color-secondary), var(--color-cta));
 }
 
 .menu-btn.secondary:hover {
-    box-shadow: 0 0 30px var(--glow-magenta);
+    box-shadow: 0 0 30px var(--glow-secondary);
 }
 
 /* === GAME MODES === */
@@ -322,8 +390,8 @@
 }
 
 .mode-btn:hover {
-  background: rgba(0, 255, 255, 0.1);
-  border-color: var(--neon-cyan);
+  background: rgba(124, 58, 237, 0.15);
+  border-color: var(--color-primary);
   transform: translateX(5px);
 }
 
@@ -338,7 +406,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 255, 255, 0.1);
+  background: rgba(124, 58, 237, 0.15);
   border-radius: 8px;
 }
 
@@ -346,7 +414,7 @@
   flex: 1;
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--neon-cyan);
+  color: var(--color-primary);
   letter-spacing: 1px;
 }
 
@@ -388,8 +456,8 @@
 .key {
     font-size: 1.2rem;
     font-weight: 700;
-    color: var(--neon-magenta);
-    text-shadow: 0 0 10px var(--glow-magenta);
+    color: var(--color-cta);
+    text-shadow: 0 0 10px var(--glow-cta);
 }
 
 .key-desc {
@@ -445,8 +513,10 @@
     font-size: 2rem;
     font-weight: 900;
     margin: 0 0 1.5rem 0;
-    color: var(--neon-cyan);
-    text-shadow: 0 0 30px var(--glow-cyan);
+    /* Design System: Press Start 2P */
+    font-family: 'Press Start 2P', cursive;
+    color: var(--color-secondary);
+    text-shadow: 0 0 30px var(--glow-secondary);
     letter-spacing: 4px;
 }
 
@@ -461,7 +531,7 @@
     padding: 0.75rem;
     background: rgba(255, 255, 255, 0.03);
     border-radius: 8px;
-    border: 1px solid rgba(0, 255, 255, 0.2);
+    border: 1px solid rgba(124, 58, 237, 0.3);
 }
 
 .pause-label {
@@ -476,7 +546,7 @@
     display: block;
     font-size: 1.1rem;
     font-weight: 700;
-    color: var(--neon-cyan);
+    color: var(--color-secondary);
 }
 
 .pause-buttons {
@@ -503,33 +573,33 @@
 }
 
 .pause-btn.primary {
-    border-color: var(--neon-cyan);
-    color: var(--neon-cyan);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
 }
 
 .pause-btn.primary:hover {
-    background: rgba(0, 255, 255, 0.15);
-    box-shadow: 0 0 20px var(--glow-cyan);
+    background: rgba(124, 58, 237, 0.15);
+    box-shadow: 0 0 20px var(--glow-primary);
 }
 
 .pause-btn.secondary {
-    border-color: var(--neon-purple);
-    color: var(--neon-purple);
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
 }
 
 .pause-btn.secondary:hover {
-    background: rgba(128, 0, 255, 0.15);
-    box-shadow: 0 0 20px var(--glow-magenta);
+    background: rgba(167, 139, 250, 0.15);
+    box-shadow: 0 0 20px var(--glow-secondary);
 }
 
 .pause-btn.danger {
-    border-color: var(--neon-pink);
-    color: var(--neon-pink);
+    border-color: var(--color-cta);
+    color: var(--color-cta);
 }
 
 .pause-btn.danger:hover {
-    background: rgba(255, 0, 128, 0.15);
-    box-shadow: 0 0 20px rgba(255, 0, 128, 0.5);
+    background: rgba(244, 63, 94, 0.15);
+    box-shadow: 0 0 20px var(--glow-cta);
 }
 
 .pause-btn .btn-icon {
@@ -547,8 +617,10 @@
     font-size: 2.5rem;
     font-weight: 900;
     margin: 0 0 2rem 0;
-    color: var(--neon-pink);
-    text-shadow: 0 0 40px var(--glow-magenta);
+    /* Design System: Press Start 2P */
+    font-family: 'Press Start 2P', cursive;
+    color: var(--color-cta);
+    text-shadow: 0 0 40px var(--glow-cta);
     letter-spacing: 4px;
 }
 
@@ -563,7 +635,7 @@
     padding: 1rem;
     background: rgba(255, 255, 255, 0.03);
     border-radius: 8px;
-    border: 1px solid rgba(255, 0, 128, 0.3);
+    border: 1px solid rgba(244, 63, 94, 0.3);
 }
 
 .go-label {
@@ -578,7 +650,7 @@
     display: block;
     font-size: 1.2rem;
     font-weight: 700;
-    color: var(--neon-cyan);
+    color: var(--color-secondary);
 }
 
 .go-highscore {
@@ -594,9 +666,11 @@
 }
 
 .trophy {
-    font-size: 2rem;
+    font-size: 2.5rem;
     display: block;
     margin-bottom: 0.5rem;
+    color: #FFD700;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
 }
 
 .new-record {
@@ -631,7 +705,7 @@
 .hud-item {
     padding: 0.5rem 1rem;
     background: rgba(10, 10, 15, 0.8);
-    border: 1px solid rgba(0, 255, 255, 0.3);
+    border: 1px solid rgba(124, 58, 237, 0.3);
     border-radius: 4px;
 }
 
@@ -646,7 +720,7 @@
     display: block;
     font-size: 0.9rem;
     font-weight: 700;
-    color: var(--neon-cyan);
+    color: var(--color-secondary);
 }
 
 /* === POWER-UP NOTIFICATIONS === */
@@ -671,17 +745,17 @@
 
 .powerup-notification.powerup-shield {
     border-color: var(--neon-blue);
-    box-shadow: 0 0 30px var(--glow-blue);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
 }
 
 .powerup-notification.powerup-boost {
-    border-color: var(--neon-green);
-    box-shadow: 0 0 30px rgba(0, 255, 128, 0.5);
+    border-color: #10B981;
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
 }
 
 .powerup-notification.powerup-slowmo {
-    border-color: var(--neon-purple);
-    box-shadow: 0 0 30px var(--glow-magenta);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 30px var(--glow-primary);
 }
 
 .powerup-icon {
@@ -720,10 +794,10 @@
 .dpad-btn {
     width: 3rem;
     height: 3rem;
-    background: rgba(0, 255, 255, 0.2);
-    border: 2px solid rgba(0, 255, 255, 0.4);
+    background: rgba(124, 58, 237, 0.2);
+    border: 2px solid rgba(124, 58, 237, 0.4);
     border-radius: 8px;
-    color: var(--neon-cyan);
+    color: var(--color-primary);
     font-size: 1.2rem;
     display: flex;
     align-items: center;
@@ -732,8 +806,8 @@
 }
 
 .dpad-btn:active {
-    background: rgba(0, 255, 255, 0.4);
-    box-shadow: 0 0 20px var(--glow-cyan);
+    background: rgba(124, 58, 237, 0.4);
+    box-shadow: 0 0 20px var(--glow-primary);
 }
 
 .dpad-btn.up { grid-area: up; }
@@ -744,10 +818,10 @@
 .boost-btn {
     width: 4rem;
     height: 4rem;
-    background: rgba(0, 255, 128, 0.2);
-    border: 2px solid var(--neon-green);
+    background: rgba(16, 185, 129, 0.2);
+    border: 2px solid #10B981;
     border-radius: 50%;
-    color: var(--neon-green);
+    color: #10B981;
     font-size: 1.5rem;
     display: flex;
     align-items: center;
@@ -755,8 +829,8 @@
 }
 
 .boost-btn:active {
-    background: rgba(0, 255, 128, 0.4);
-    box-shadow: 0 0 30px rgba(0, 255, 128, 0.6);
+    background: rgba(16, 185, 129, 0.4);
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.6);
 }
 
 /* === FOOTER BRANDING === */
@@ -788,8 +862,8 @@
 }
 
 .combo-mult {
-    color: var(--neon-magenta) !important;
-    text-shadow: 0 0 15px var(--glow-magenta) !important;
+    color: var(--color-cta) !important;
+    text-shadow: 0 0 15px var(--glow-cta) !important;
     font-size: 1rem;
 }
 
@@ -803,14 +877,14 @@
 .combo-stats {
     margin: 1.5rem 0;
     padding: 1rem;
-    background: rgba(255, 0, 128, 0.1);
+    background: rgba(244, 63, 94, 0.1);
     border-radius: 8px;
-    border: 1px solid rgba(255, 0, 128, 0.3);
+    border: 1px solid rgba(244, 63, 94, 0.3);
 }
 
 .combo-section-title {
     font-size: 0.7rem;
-    color: var(--neon-magenta);
+    color: var(--color-cta);
     letter-spacing: 3px;
     margin: 0 0 1rem 0;
     text-align: center;
@@ -837,8 +911,8 @@
 .combo-value {
     font-size: 1rem;
     font-weight: 700;
-    color: var(--neon-magenta);
-    text-shadow: 0 0 10px var(--glow-magenta);
+    color: var(--color-cta);
+    text-shadow: 0 0 10px var(--glow-cta);
 }
 
 /* === RESPONSIVE === */
@@ -898,7 +972,7 @@
     /* Simplify button hover effects */
     .menu-btn:hover {
         transform: none;
-        box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
     }
 }
 
@@ -907,14 +981,14 @@
 .menu-btn:focus-visible,
 .dpad-btn:focus-visible,
 .boost-btn:focus-visible {
-    outline: 3px solid var(--neon-cyan);
+    outline: 3px solid var(--color-primary);
     outline-offset: 3px;
-    box-shadow: 0 0 0 4px rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.3);
 }
 
 /* High contrast focus for better visibility */
 canvas:focus-visible {
-    outline: 3px solid var(--neon-magenta);
+    outline: 3px solid var(--color-cta);
     outline-offset: 2px;
 }
 
