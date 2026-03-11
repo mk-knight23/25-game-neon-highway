@@ -5,6 +5,7 @@
   "description": "A Cyber-Noir racing experience with persistent ghost systems and dynamic weather.",
   "type": "module",
   "scripts": {
+    "production": "npm run build && npm start",
     "lint": "eslint .",
     "dev": "vite",
     "build": "tsc && vite build",
