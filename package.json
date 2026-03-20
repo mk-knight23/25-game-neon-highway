@@ -8,9 +8,10 @@
     "production": "npm run build && npm start",
     "lint": "eslint .",
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "typecheck": "tsc && vite build"
   },
   "keywords": [
     "game",
