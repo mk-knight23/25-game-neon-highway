@@ -8,8 +8,9 @@
 import { gameState } from '../core/state'
 import { inputHandler } from '../core/input'
 import { soundManager } from '../audio/soundManager'
-import { COLORS, STORAGE_KEYS } from '../core/constants'
+import { COLORS } from '../core/constants'
 import { comboSystem } from '../game/comboSystem'
+import { saveSoundEnabled, saveTheme, saveLastMode } from '../core/settings'
 
 export class UIOverlay {
   private container: HTMLElement
@@ -112,6 +113,7 @@ export class UIOverlay {
       btn.addEventListener('click', (e) => {
         const mode = (e.currentTarget as HTMLElement).dataset.mode as 'endless' | 'timetrial' | 'zen'
         soundManager.playMenuSelect()
+        saveLastMode(mode)
         gameState.setGameMode(mode)
         this.hide()
         gameState.setGameState('playing')
@@ -126,7 +128,7 @@ export class UIOverlay {
       const currentState = soundManager.isEnabled()
       const newState = !currentState
       soundManager.setEnabled(newState)
-      localStorage.setItem(STORAGE_KEYS.soundEnabled, newState.toString())
+      saveSoundEnabled(newState)
 
       // Update button - No emoji, use text symbol
       const icon = soundToggle.querySelector('.sound-icon')
@@ -146,7 +148,7 @@ export class UIOverlay {
       const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark'
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
       document.documentElement.setAttribute('data-theme', newTheme)
-      localStorage.setItem('neon_highway_theme', newTheme)
+      saveTheme(newTheme as 'dark' | 'light')
       soundManager.playMenuSelect()
     })
   }

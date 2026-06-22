@@ -11,6 +11,7 @@ import { initUI } from './ui/overlay'
 import { startGameLoop, stopGameLoop } from './core/gameLoop'
 import { gameState } from './core/state'
 import { inputHandler } from './core/input'
+import { applyPersistedSettings } from './core/settings'
 
 // Game containers
 let renderer: ReturnType<typeof initCanvas> | null = null
@@ -27,6 +28,9 @@ let currentState: string = 'menu'
  * Initialize game
  */
 function init(): void {
+  // Restore persisted settings (theme, etc.) before rendering anything
+  applyPersistedSettings()
+
   // Initialize renderer
   renderer = initCanvas(canvas)
 
