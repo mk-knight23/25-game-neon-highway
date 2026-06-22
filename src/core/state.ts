@@ -16,6 +16,7 @@ import type {
   GameMode,
 } from '../types/game'
 import { STORAGE_KEYS, CONFIG, BOOST_CONFIG } from './constants'
+import { levelForScore } from '../game/scoring'
 
 class GameStateManager {
   // Game state
@@ -360,16 +361,7 @@ class GameStateManager {
 
   // Level management
   private updateLevel(): void {
-    const score = this.state.score
-    let newLevel = 1
-
-    for (let i = 0; i < 5; i++) {
-      if (score >= 1000 * (i + 1) * (i + 1)) {
-        newLevel = i + 2
-      }
-    }
-
-    this.state.level = newLevel
+    this.state.level = levelForScore(this.state.score)
   }
 
   // Reset game

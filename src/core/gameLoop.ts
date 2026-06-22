@@ -17,6 +17,7 @@ import { updateDifficulty, getLevelProgress } from '../game/difficulty'
 import { comboSystem } from '../game/comboSystem'
 import { weatherSystem } from '../game/weather'
 import { ghostSystem } from '../game/ghost'
+import { nextSpeedThreshold, SPEED_THRESHOLD_INCREMENT } from '../game/scoring'
 import type { CanvasRenderer } from '../renderer/canvas'
 import type { UIOverlay } from '../ui/overlay'
 
@@ -195,10 +196,10 @@ function update(deltaTime: number): void {
     }
 
     // Increase speed at score thresholds (every 500 points)
-    const nextThreshold = lastSpeedThreshold + 500
-    if (stateData.score >= nextThreshold && nextThreshold > 0) {
-      gameState.setSpeed(stateData.speed + 0.5)
-      lastSpeedThreshold = nextThreshold
+    const crossed = nextSpeedThreshold(stateData.score, lastSpeedThreshold)
+    if (crossed !== null) {
+      gameState.setSpeed(stateData.speed + SPEED_THRESHOLD_INCREMENT)
+      lastSpeedThreshold = crossed
     }
   }
 }
