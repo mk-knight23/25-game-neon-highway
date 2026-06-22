@@ -24,3 +24,5 @@ Thumbs.db
 # TypeScript
 *.tsbuildinfo
 tsconfig.tsbuildinfo
+node_modules
+dist
