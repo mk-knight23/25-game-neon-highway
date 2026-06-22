@@ -24,6 +24,7 @@ export class UIOverlay {
    * V3: Added per-mode high scores and audio toggle
    */
   public showMenu(): void {
+    document.body.dataset.screen = 'menu'
     const highScores = gameState.getState().highScores
     const soundEnabled = soundManager.isEnabled()
 
@@ -158,6 +159,7 @@ export class UIOverlay {
    * V2: Added combo statistics display
    */
   public showGameOver(score: number, highScore: number): void {
+    document.body.dataset.screen = 'gameover'
     const isNewHighScore = score >= highScore
     const comboSummary = comboSystem.getComboSummary()
 
@@ -248,6 +250,7 @@ export class UIOverlay {
    * V3: Enhanced pause menu with resume/restart/quit options
    */
   public showPause(): void {
+    document.body.dataset.screen = 'paused'
     const state = gameState.getState()
 
     this.container.innerHTML = `
@@ -320,6 +323,7 @@ export class UIOverlay {
    * Hide all overlays
    */
   public hide(): void {
+    document.body.dataset.screen = 'playing'
     this.container.innerHTML = ''
   }
 

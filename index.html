@@ -6,12 +6,34 @@
     <meta name="theme-color" content="#0a0a0f">
     <title>Neon Highway Racing | Cyberpunk Racing Game</title>
     <meta name="description" content="A futuristic cyberpunk racing game. Dodge traffic, collect power-ups, and race through neon-lit highways.">
+
+    <!-- Neon-noir typography: Orbitron (display) + JetBrains Mono (data) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
     <style>
         /* Critical CSS inline for faster load */
-        body { margin: 0; overflow: hidden; background: #0a0a0f; }
+        body { margin: 0; overflow: hidden; background: #050507; }
     </style>
 </head>
-<body>
+<body data-screen="menu">
+    <!-- ===== LAYERED NEON-NOIR BACKDROP (behind canvas) ===== -->
+    <div class="bg-stage" aria-hidden="true">
+        <!-- Layer 2: tunnel video (menu/hero/game-over only) + static fallback -->
+        <video class="bg-video" autoplay muted loop playsinline preload="metadata" poster="/media/highway-bg.jpg">
+            <source src="/media/highway-loop.mp4" type="video/mp4">
+        </video>
+        <!-- Layer 2b: static gameplay background (always behind the live canvas) -->
+        <div class="bg-static"></div>
+        <!-- Layer 3: theme dark gradient overlay -->
+        <div class="bg-gradient"></div>
+        <!-- Layer 4: neon grid + scanlines + cyan/magenta glow -->
+        <div class="bg-grid"></div>
+        <div class="bg-scanlines"></div>
+        <div class="bg-glow"></div>
+    </div>
+
     <div id="game-container" class="game-container">
         <!-- Canvas for game rendering -->
         <div id="canvas-container" class="canvas-container">

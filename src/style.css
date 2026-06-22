@@ -6,40 +6,39 @@
 
 @import "tailwindcss";
 
-/* Google Fonts Import - Design System */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+/* Fonts (Orbitron + JetBrains Mono) are loaded via <link> in index.html */
 
 /* === DESIGN SYSTEM: CYBERPUNK UI === */
 @layer base {
     :root {
-        /* Design System Colors */
-        --color-primary: #7C3AED;
-        --color-secondary: #A78BFA;
-        --color-cta: #F43F5E;
-        --color-background: #0F0F23;
-        --color-text: #E2E8F0;
+        /* Neon-noir design system colors */
+        --color-primary: #22D3EE;     /* neon cyan */
+        --color-secondary: #8B5CF6;   /* electric violet */
+        --color-cta: #EC4899;         /* magenta */
+        --color-background: #050507;
+        --color-text: #F0F9FF;
 
         /* Legacy color aliases (for compatibility) */
-        --neon-cyan: var(--color-secondary);
-        --neon-magenta: var(--color-cta);
+        --neon-cyan: #22D3EE;
+        --neon-magenta: #EC4899;
         --neon-blue: #8B5CF6;
-        --neon-pink: var(--color-cta);
-        --neon-purple: var(--color-primary);
+        --neon-pink: #EC4899;
+        --neon-purple: #8B5CF6;
         --neon-green: #10B981;
 
         /* Backgrounds */
         --dark-bg: var(--color-background);
-        --darker-bg: #0a0a18;
-        --road-color: #1a1a2e;
+        --darker-bg: #0A0A0F;
+        --road-color: #0d0d18;
 
         /* Text */
         --text-primary: var(--color-text);
         --text-secondary: #94A3B8;
 
         /* Glows */
-        --glow-primary: rgba(124, 58, 237, 0.6);
-        --glow-secondary: rgba(167, 139, 250, 0.5);
-        --glow-cta: rgba(244, 63, 94, 0.6);
+        --glow-primary: rgba(34, 211, 238, 0.6);
+        --glow-secondary: rgba(139, 92, 246, 0.5);
+        --glow-cta: rgba(236, 72, 153, 0.6);
     }
 
     /* Light mode - Design System compliant with proper contrast */
@@ -76,8 +75,8 @@
         padding: 0;
         overflow: hidden;
         background: var(--dark-bg);
-        /* Design System Typography */
-        font-family: 'VT323', 'Courier New', monospace;
+        /* Neon-noir body typography */
+        font-family: 'JetBrains Mono', 'Courier New', monospace;
         color: var(--text-primary);
         -webkit-font-smoothing: antialiased;
         transition: background 0.3s ease, color 0.3s ease;
@@ -90,26 +89,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background:
-            radial-gradient(ellipse at top, #1a1a2e 0%, transparent 50%),
-            linear-gradient(180deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
-    }
-
-    /* Scanlines effect */
-    #game-container::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: repeating-linear-gradient(
-            0deg,
-            rgba(0, 0, 0, 0.1) 0px,
-            rgba(0, 0, 0, 0.1) 1px,
-            transparent 1px,
-            transparent 3px
-        );
-        pointer-events: none;
-        z-index: 10;
-        opacity: 0.3;
+        /* Transparent so the layered neon-noir backdrop (neon-bg.css) shows through */
+        background: transparent;
     }
 }
 
@@ -119,10 +100,10 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow:
-        0 0 60px rgba(124, 58, 237, 0.15),
-        0 0 100px rgba(244, 63, 94, 0.1),
-        inset 0 0 60px rgba(0, 0, 0, 0.5);
-    border: 2px solid rgba(124, 58, 237, 0.4);
+        0 0 60px rgba(34, 211, 238, 0.22),
+        0 0 120px rgba(236, 72, 153, 0.15),
+        inset 0 0 60px rgba(0, 0, 0, 0.55);
+    border: 2px solid rgba(34, 211, 238, 0.45);
 }
 
 #game-canvas {
@@ -149,15 +130,33 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(10, 10, 15, 0.95);
-    backdrop-filter: blur(10px);
+    /* Lighter veil so the tunnel video reads through behind the glass panel */
+    background: radial-gradient(ellipse at center, rgba(5,5,7,0.55) 0%, rgba(5,5,7,0.78) 100%);
+    backdrop-filter: blur(4px);
+}
+
+/* === NEON GLASS PANEL === */
+.menu-content,
+.gameover-content,
+.pause-content {
+    text-align: center;
+    max-width: 500px;
+    animation: fadeIn 0.5s ease;
+    background: linear-gradient(160deg, rgba(15,16,26,0.82) 0%, rgba(8,8,14,0.9) 100%);
+    border: 1px solid rgba(34, 211, 238, 0.35);
+    border-radius: 16px;
+    backdrop-filter: blur(14px) saturate(1.2);
+    box-shadow:
+        0 0 0 1px rgba(236, 72, 153, 0.12),
+        0 0 50px rgba(34, 211, 238, 0.18),
+        0 24px 70px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(240, 249, 255, 0.06);
 }
 
 .menu-content {
-    text-align: center;
     padding: 3rem;
-    max-width: 500px;
-    animation: fadeIn 0.5s ease;
+    overflow-y: auto;
+    max-height: 92vh;
 }
 
 @keyframes fadeIn {
@@ -169,20 +168,20 @@
     font-size: 3rem;
     font-weight: 900;
     margin: 0 0 0.5rem 0;
-    /* Design System: Press Start 2P for headings */
-    font-family: 'Press Start 2P', cursive;
-    background: linear-gradient(135deg, var(--color-primary), var(--color-cta));
+    /* Neon-noir display face */
+    font-family: 'Orbitron', 'Arial Black', sans-serif;
+    background: linear-gradient(135deg, #22D3EE 0%, #8B5CF6 50%, #EC4899 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-shadow: 0 0 60px var(--glow-primary);
-    letter-spacing: 4px;
-    animation: titleGlow 2s ease-in-out infinite alternate;
+    text-shadow: 0 0 60px rgba(34, 211, 238, 0.5);
+    letter-spacing: 6px;
+    animation: titleGlow 2.4s ease-in-out infinite alternate;
 }
 
 @keyframes titleGlow {
-    from { filter: drop-shadow(0 0 20px var(--glow-primary)); }
-    to { filter: drop-shadow(0 0 40px var(--glow-cta)); }
+    from { filter: drop-shadow(0 0 18px rgba(34, 211, 238, 0.6)); }
+    to   { filter: drop-shadow(0 0 38px rgba(236, 72, 153, 0.6)); }
 }
 
 /* Icon classes for menu legend (Design System - no emojis) */
@@ -487,8 +486,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(10, 10, 15, 0.95);
-    backdrop-filter: blur(10px);
+    background: radial-gradient(ellipse at center, rgba(5,5,7,0.55) 0%, rgba(5,5,7,0.82) 100%);
+    backdrop-filter: blur(4px);
 }
 
 /* V3: PAUSE OVERLAY */
@@ -498,12 +497,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(10, 10, 15, 0.9);
-    backdrop-filter: blur(5px);
+    background: radial-gradient(ellipse at center, rgba(5,5,7,0.5) 0%, rgba(5,5,7,0.78) 100%);
+    backdrop-filter: blur(4px);
 }
 
 .pause-content {
-    text-align: center;
     padding: 2.5rem;
     max-width: 400px;
     animation: fadeIn 0.3s ease;
@@ -513,11 +511,10 @@
     font-size: 2rem;
     font-weight: 900;
     margin: 0 0 1.5rem 0;
-    /* Design System: Press Start 2P */
-    font-family: 'Press Start 2P', cursive;
-    color: var(--color-secondary);
-    text-shadow: 0 0 30px var(--glow-secondary);
-    letter-spacing: 4px;
+    font-family: 'Orbitron', 'Arial Black', sans-serif;
+    color: #22D3EE;
+    text-shadow: 0 0 30px rgba(34, 211, 238, 0.6);
+    letter-spacing: 6px;
 }
 
 .pause-stats {
@@ -617,11 +614,10 @@
     font-size: 2.5rem;
     font-weight: 900;
     margin: 0 0 2rem 0;
-    /* Design System: Press Start 2P */
-    font-family: 'Press Start 2P', cursive;
-    color: var(--color-cta);
-    text-shadow: 0 0 40px var(--glow-cta);
-    letter-spacing: 4px;
+    font-family: 'Orbitron', 'Arial Black', sans-serif;
+    color: #EC4899;
+    text-shadow: 0 0 40px rgba(236, 72, 153, 0.6);
+    letter-spacing: 6px;
 }
 
 .gameover-stats {
@@ -704,23 +700,27 @@
 
 .hud-item {
     padding: 0.5rem 1rem;
-    background: rgba(10, 10, 15, 0.8);
-    border: 1px solid rgba(124, 58, 237, 0.3);
-    border-radius: 4px;
+    background: rgba(8, 8, 14, 0.78);
+    border: 1px solid rgba(34, 211, 238, 0.4);
+    border-radius: 6px;
+    box-shadow: 0 0 18px rgba(34, 211, 238, 0.12);
+    backdrop-filter: blur(3px);
 }
 
 .hud-label {
     display: block;
     font-size: 0.55rem;
-    color: #6666aa;
+    color: #7c8aa8;
     letter-spacing: 2px;
 }
 
 .hud-value {
     display: block;
-    font-size: 0.9rem;
+    font-family: 'Orbitron', 'Arial Black', sans-serif;
+    font-size: 0.95rem;
     font-weight: 700;
-    color: var(--color-secondary);
+    color: #22D3EE;
+    text-shadow: 0 0 12px rgba(34, 211, 238, 0.5);
 }
 
 /* === POWER-UP NOTIFICATIONS === */

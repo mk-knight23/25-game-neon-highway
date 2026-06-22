@@ -6,6 +6,7 @@
  */
 
 import './style.css'
+import './neon-bg.css'
 import { initCanvas, fitCanvasToViewport } from './renderer/canvas'
 import { initUI } from './ui/overlay'
 import { startGameLoop, stopGameLoop } from './core/gameLoop'
