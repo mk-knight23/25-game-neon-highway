@@ -68,6 +68,7 @@ class GameStateManager {
       boostActive: false,
       boostTime: 0,
       boostEnergy: BOOST_CONFIG.maxEnergy,
+      boostCooldown: false,
     }
 
     this.enemies = []
@@ -228,7 +229,16 @@ class GameStateManager {
   }
 
   public canActivateBoost(): boolean {
-    return this.player.boostEnergy >= BOOST_CONFIG.minEnergyToStart
+    return !this.player.boostCooldown && this.player.boostEnergy >= BOOST_CONFIG.minEnergyToStart
+  }
+
+  // V6 Nitro cooldown management
+  public isBoostOnCooldown(): boolean {
+    return this.player.boostCooldown
+  }
+
+  public setBoostCooldown(active: boolean): void {
+    this.player.boostCooldown = active
   }
 
   // Enemy methods
@@ -382,6 +392,7 @@ class GameStateManager {
     this.player.y = 0
     this.player.boostActive = false
     this.player.boostEnergy = BOOST_CONFIG.maxEnergy
+    this.player.boostCooldown = false
 
     this.enemies = []
     this.particles = []

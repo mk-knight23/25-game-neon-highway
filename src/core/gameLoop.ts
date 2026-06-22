@@ -132,6 +132,9 @@ function update(deltaTime: number): void {
   // Create player trail
   if (player.boostActive) {
     createTrail(player.x, player.y, player.width)
+    // Nitro juice: dense speed lines while boosting
+    createSpeedLines()
+    if (Math.random() < 0.5) createSpeedLines()
   }
 
   // Create speed lines at high speeds

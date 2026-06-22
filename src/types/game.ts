@@ -27,6 +27,7 @@ export interface Player {
   boostActive: boolean
   boostTime: number
   boostEnergy: number // V3: Boost energy system (0-100)
+  boostCooldown: boolean // V6: nitro locked out after full depletion
 }
 
 export interface Enemy {

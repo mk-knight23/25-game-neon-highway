@@ -585,9 +585,16 @@ export class CanvasRenderer {
     this.ctx.fillStyle = 'rgba(255, 255, 255, 0.15)'
     this.ctx.fillRect(boostBarX, boostBarY, boostBarWidth, boostBarHeight)
 
-    // Boost bar fill with color based on energy level
+    // Boost bar fill with color based on energy level / cooldown state
     const energyPercent = boostEnergy / BOOST_CONFIG.maxEnergy
-    const boostColor: string = energyPercent < 0.3 ? COLORS.neonPink : energyPercent < 0.6 ? COLORS.neonCyan : COLORS.neonGreen
+    const onCooldown = gameState.isBoostOnCooldown()
+    const boostColor: string = onCooldown
+      ? COLORS.neonPink
+      : energyPercent < 0.3
+      ? COLORS.neonPink
+      : energyPercent < 0.6
+      ? COLORS.neonCyan
+      : COLORS.neonGreen
 
     this.ctx.fillStyle = boostColor
     this.ctx.fillRect(boostBarX, boostBarY, boostBarWidth * energyPercent, boostBarHeight)
@@ -600,11 +607,11 @@ export class CanvasRenderer {
       this.ctx.shadowBlur = 0
     }
 
-    // Boost label
-    this.ctx.fillStyle = COLORS.textSecondary
+    // Nitro label — shows COOLDOWN lockout state
+    this.ctx.fillStyle = onCooldown ? COLORS.neonPink : COLORS.textSecondary
     this.ctx.font = '12px monospace'
     this.ctx.textAlign = 'left'
-    this.ctx.fillText('BOOST', boostBarX, boostBarY - 5)
+    this.ctx.fillText(onCooldown ? 'NITRO — COOLDOWN' : 'NITRO', boostBarX, boostBarY - 5)
   }
 
   /**

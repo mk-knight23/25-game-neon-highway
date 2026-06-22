@@ -16,20 +16,26 @@ export function updatePlayer(deltaTime: number): void {
   // Calculate speed based on boost and slow-mo
   let speed = player.speed
   if (player.boostActive) {
-    speed *= 1.5
+    speed *= BOOST_CONFIG.speedMultiplier
 
     // V3: Consume boost energy while active
     const drainAmount = BOOST_CONFIG.drainRate * (deltaTime / 1000)
     gameState.consumeBoostEnergy(drainAmount)
 
-    // Deactivate if energy runs out
+    // Deactivate if energy runs out and enter cooldown lockout
     if (gameState.getBoostEnergy() <= 0) {
       gameState.setPlayerBoost(false)
+      gameState.setBoostCooldown(true)
     }
   } else {
     // Regenerate boost energy when not boosting
     const regenAmount = BOOST_CONFIG.regenRate * (deltaTime / 1000)
     gameState.regenerateBoostEnergy(regenAmount)
+
+    // V6: release nitro cooldown once energy has recovered enough
+    if (gameState.isBoostOnCooldown() && gameState.getBoostEnergy() >= BOOST_CONFIG.cooldownReleaseEnergy) {
+      gameState.setBoostCooldown(false)
+    }
   }
 
   if (state.slowMoActive) {

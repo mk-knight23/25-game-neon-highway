@@ -73,10 +73,14 @@ export const STORAGE_KEYS = {
   soundEnabled: 'neon_racing_sound_enabled',
 } as const
 
-// Boost energy system - V3
+// Boost / Nitro energy system - V3
 export const BOOST_CONFIG = {
   maxEnergy: 100,
   regenRate: 5, // per second when not boosting
   drainRate: 25, // per second when boosting
   minEnergyToStart: 20, // minimum energy to activate boost
+  // V6 Nitro: when energy is fully drained the nitro enters a cooldown
+  // lockout and cannot be re-triggered until energy recovers past this level.
+  cooldownReleaseEnergy: 60,
+  speedMultiplier: 1.5, // velocity boost while nitro is active
 } as const
