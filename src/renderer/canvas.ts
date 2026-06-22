@@ -11,6 +11,7 @@ import { comboSystem } from '../game/comboSystem'
 import { getShooterChargeProgress } from '../game/projectiles'
 import { weatherSystem } from '../game/weather'
 import { ghostSystem } from '../game/ghost'
+import { dayNightCycle } from '../game/dayNight'
 import type { Projectile } from '../types/game'
 
 export class CanvasRenderer {
@@ -45,6 +46,9 @@ export class CanvasRenderer {
     // Clear with background color
     this.ctx.fillStyle = COLORS.darkBg
     this.ctx.fillRect(-10, -10, this.canvas.width + 20, this.canvas.height + 20)
+
+    // Ambient day/night tint (purely visual, drawn under neon elements)
+    dayNightCycle.draw(this.ctx, this.canvas.width, this.canvas.height)
 
     // Draw weather background effects (fog)
     weatherSystem.draw(this.ctx, this.canvas.width, this.canvas.height)

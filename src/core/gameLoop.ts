@@ -16,6 +16,7 @@ import { visualEffects, EFFECTS } from '../visual/effects'
 import { updateDifficulty, getLevelProgress } from '../game/difficulty'
 import { comboSystem } from '../game/comboSystem'
 import { weatherSystem } from '../game/weather'
+import { dayNightCycle } from '../game/dayNight'
 import { ghostSystem } from '../game/ghost'
 import { nextSpeedThreshold, SPEED_THRESHOLD_INCREMENT } from '../game/scoring'
 import type { CanvasRenderer } from '../renderer/canvas'
@@ -55,6 +56,9 @@ export function startGameLoop(renderer: CanvasRenderer, ui: UIOverlay): void {
 
   // Start Ghost recording
   ghostSystem.startRecording()
+
+  // Reset day/night cycle for a fresh run
+  dayNightCycle.reset()
 
   lastTime = performance.now()
   accumulator = 0
