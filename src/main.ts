@@ -6,7 +6,7 @@
  */
 
 import './style.css'
-import { initCanvas } from './renderer/canvas'
+import { initCanvas, fitCanvasToViewport } from './renderer/canvas'
 import { initUI } from './ui/overlay'
 import { startGameLoop, stopGameLoop } from './core/gameLoop'
 import { gameState } from './core/state'
@@ -107,12 +107,9 @@ function handleStateChange(oldState: string, newState: string): void {
  */
 window.addEventListener('resize', () => {
   if (canvas && renderer) {
-    const container = canvas.parentElement
-    if (container) {
-      canvas.width = Math.min(500, container.clientWidth)
-      canvas.height = Math.min(800, window.innerHeight - 100)
-      gameState.setRoadDimensions(400, canvas.height)
-    }
+    // Internal resolution is fixed; only rescale the CSS display size so the
+    // aspect ratio is preserved and game coordinates stay stable.
+    fitCanvasToViewport(canvas)
   }
 })
 

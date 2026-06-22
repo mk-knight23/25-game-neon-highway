@@ -770,67 +770,75 @@
     letter-spacing: 2px;
 }
 
-/* === VIRTUAL CONTROLS (Mobile) === */
+/* === VIRTUAL CONTROLS (Touch devices only) === */
 .virtual-controls {
     position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 1.5rem;
+    left: 0;
+    right: 0;
     display: flex;
-    gap: 1rem;
-    align-items: center;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 1.25rem;
     z-index: 30;
+    pointer-events: none; /* clusters re-enable on the buttons */
+    /* Shown only on touch devices — see @media (hover: none) below */
+    display: none;
 }
 
-.dpad {
-    display: grid;
-    grid-template-areas:
-        '. up .'
-        'left . right'
-        '. down .';
-    gap: 0.25rem;
-}
-
-.dpad-btn {
-    width: 3rem;
-    height: 3rem;
-    background: rgba(124, 58, 237, 0.2);
-    border: 2px solid rgba(124, 58, 237, 0.4);
-    border-radius: 8px;
-    color: var(--color-primary);
-    font-size: 1.2rem;
+.vc-cluster {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    touch-action: manipulation;
+    gap: 0.75rem;
+    pointer-events: auto;
 }
 
-.dpad-btn:active {
-    background: rgba(124, 58, 237, 0.4);
-    box-shadow: 0 0 20px var(--glow-primary);
+.vc-drive {
+    align-items: flex-end;
 }
 
-.dpad-btn.up { grid-area: up; }
-.dpad-btn.down { grid-area: down; }
-.dpad-btn.left { grid-area: left; }
-.dpad-btn.right { grid-area: right; }
-
-.boost-btn {
+.vc-btn {
     width: 4rem;
     height: 4rem;
-    background: rgba(16, 185, 129, 0.2);
-    border: 2px solid #10B981;
-    border-radius: 50%;
-    color: #10B981;
-    font-size: 1.5rem;
+    background: rgba(0, 255, 255, 0.12);
+    border: 2px solid rgba(0, 255, 255, 0.45);
+    border-radius: 14px;
+    color: #00ffff;
+    font-size: 1.6rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    backdrop-filter: blur(2px);
 }
 
-.boost-btn:active {
-    background: rgba(16, 185, 129, 0.4);
-    box-shadow: 0 0 30px rgba(16, 185, 129, 0.6);
+.vc-btn.vc-active {
+    background: rgba(0, 255, 255, 0.35);
+    box-shadow: 0 0 22px rgba(0, 255, 255, 0.6);
+    transform: scale(0.95);
+}
+
+.vc-nitro {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    color: #00ff80;
+    border-color: #00ff80;
+    background: rgba(0, 255, 128, 0.14);
+}
+
+.vc-nitro.vc-active {
+    background: rgba(0, 255, 128, 0.4);
+    box-shadow: 0 0 30px rgba(0, 255, 128, 0.7);
+}
+
+/* Show on-screen controls only on devices without a fine pointer (touch) */
+@media (hover: none) and (pointer: coarse) {
+    .virtual-controls {
+        display: flex;
+    }
 }
 
 /* === FOOTER BRANDING === */
@@ -940,16 +948,18 @@
 
     .virtual-controls {
         bottom: 1rem;
+        padding: 0 0.75rem;
     }
 
-    .dpad-btn {
-        width: 2.5rem;
-        height: 2.5rem;
+    .vc-btn {
+        width: 3.25rem;
+        height: 3.25rem;
+        font-size: 1.3rem;
     }
 
-    .boost-btn {
-        width: 3.5rem;
-        height: 3.5rem;
+    .vc-nitro {
+        width: 3.75rem;
+        height: 3.75rem;
     }
 }
 
@@ -979,8 +989,7 @@
 /* === ACCESSIBILITY: FOCUS INDICATORS === */
 /* Ensure keyboard focus is clearly visible for all interactive elements */
 .menu-btn:focus-visible,
-.dpad-btn:focus-visible,
-.boost-btn:focus-visible {
+.vc-btn:focus-visible {
     outline: 3px solid var(--color-primary);
     outline-offset: 3px;
     box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.3);
@@ -995,8 +1004,7 @@ canvas:focus-visible {
 /* Ensure focus indicators work in both light and dark modes */
 @media (forced-colors: active) {
     .menu-btn:focus-visible,
-    .dpad-btn:focus-visible,
-    .boost-btn:focus-visible {
+    .vc-btn:focus-visible {
         outline: 3px solid ButtonText;
         outline-offset: 3px;
         box-shadow: none;

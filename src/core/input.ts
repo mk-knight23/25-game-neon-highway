@@ -122,50 +122,50 @@ class InputHandler {
     }
   }
 
-  // Virtual control buttons (for mobile)
+  /**
+   * On-screen controls for touch devices.
+   * Left cluster: steering (◀ ▶). Right cluster: accelerate (▲), brake (▼),
+   * and a dedicated nitro button (⚡). Uses Pointer Events so multiple
+   * buttons can be held simultaneously (e.g. steer + accelerate + nitro).
+   */
   public createVirtualControls(container: HTMLElement): void {
     const controls = document.createElement('div')
     controls.className = 'virtual-controls'
+    controls.setAttribute('role', 'group')
+    controls.setAttribute('aria-label', 'Touch controls')
     controls.innerHTML = `
-      <div class="dpad">
-        <button class="dpad-btn up" data-dir="up">▲</button>
-        <button class="dpad-btn left" data-dir="left">◀</button>
-        <button class="dpad-btn right" data-dir="right">▶</button>
-        <button class="dpad-btn down" data-dir="down">▼</button>
+      <div class="vc-cluster vc-steer">
+        <button class="vc-btn vc-left" data-dir="left" aria-label="Steer left">◀</button>
+        <button class="vc-btn vc-right" data-dir="right" aria-label="Steer right">▶</button>
       </div>
-      <button class="boost-btn" data-dir="boost">⚡</button>
+      <div class="vc-cluster vc-drive">
+        <button class="vc-btn vc-up" data-dir="up" aria-label="Accelerate">▲</button>
+        <button class="vc-btn vc-down" data-dir="down" aria-label="Brake">▼</button>
+        <button class="vc-btn vc-nitro" data-dir="boost" aria-label="Nitro boost">⚡</button>
+      </div>
     `
 
-    // Add event listeners
     const buttons = controls.querySelectorAll('[data-dir]')
     buttons.forEach(btn => {
       const dir = btn.getAttribute('data-dir') as InputKey
-
-      // Touch events
-      btn.addEventListener('touchstart', (e) => {
+      const press = (e: Event) => {
         e.preventDefault()
         gameState.setInput(dir, true)
-      })
-
-      btn.addEventListener('touchend', (e) => {
+        btn.classList.add('vc-active')
+      }
+      const release = (e: Event) => {
         e.preventDefault()
         gameState.setInput(dir, false)
-      })
+        btn.classList.remove('vc-active')
+      }
 
-      // Mouse events for testing
-      btn.addEventListener('mousedown', (e) => {
-        e.preventDefault()
-        gameState.setInput(dir, true)
-      })
-
-      btn.addEventListener('mouseup', (e) => {
-        e.preventDefault()
-        gameState.setInput(dir, false)
-      })
-
-      btn.addEventListener('mouseleave', (e) => {
-        gameState.setInput(dir, false)
-      })
+      // Pointer events cover touch + mouse + pen, and allow multi-touch.
+      btn.addEventListener('pointerdown', press)
+      btn.addEventListener('pointerup', release)
+      btn.addEventListener('pointercancel', release)
+      btn.addEventListener('pointerleave', release)
+      // Prevent the browser from firing synthetic mouse/scroll on touch.
+      btn.addEventListener('contextmenu', (e) => e.preventDefault())
     })
 
     container.appendChild(controls)

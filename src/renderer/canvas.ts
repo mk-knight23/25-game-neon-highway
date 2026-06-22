@@ -654,22 +654,50 @@ export class CanvasRenderer {
   }
 }
 
+// Fixed internal (logical) resolution. The canvas element is then scaled
+// with CSS to fit the viewport while preserving this 5:8 aspect ratio, so all
+// game logic can rely on stable coordinates regardless of device size.
+export const LOGICAL_WIDTH = 500
+export const LOGICAL_HEIGHT = 800
+const ROAD_WIDTH = 400
+
 /**
- * Initialize canvas with proper sizing
+ * Fit the canvas element to the viewport, preserving aspect ratio.
+ * Only the CSS size changes — the internal pixel resolution stays fixed.
+ */
+export function fitCanvasToViewport(canvas: HTMLCanvasElement): void {
+  const aspect = LOGICAL_WIDTH / LOGICAL_HEIGHT
+  const availW = window.innerWidth
+  // Leave a little headroom for the footer / browser chrome.
+  const availH = window.innerHeight - 20
+
+  let cssW = availW
+  let cssH = cssW / aspect
+  if (cssH > availH) {
+    cssH = availH
+    cssW = cssH * aspect
+  }
+
+  canvas.style.width = `${Math.round(cssW)}px`
+  canvas.style.height = `${Math.round(cssH)}px`
+}
+
+/**
+ * Initialize canvas with a fixed logical resolution + responsive CSS scaling.
  */
 export function initCanvas(canvas: HTMLCanvasElement): CanvasRenderer {
   const container = canvas.parentElement
   if (!container) throw new Error('Canvas has no parent')
 
-  // Set canvas size
-  const maxWidth = 500
-  const maxHeight = 800
+  // Fixed internal resolution
+  canvas.width = LOGICAL_WIDTH
+  canvas.height = LOGICAL_HEIGHT
 
-  canvas.width = Math.min(maxWidth, container.clientWidth)
-  canvas.height = Math.min(maxHeight, window.innerHeight - 100)
+  // Responsive display size
+  fitCanvasToViewport(canvas)
 
-  // Update road dimensions in state
-  gameState.setRoadDimensions(400, canvas.height)
+  // Update road dimensions in state (logical units)
+  gameState.setRoadDimensions(ROAD_WIDTH, LOGICAL_HEIGHT)
 
   return new CanvasRenderer(canvas)
 }
