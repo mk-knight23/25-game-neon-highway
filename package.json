@@ -3,6 +3,7 @@
   "private": false,
   "version": "3.0.0",
   "description": "A Cyber-Noir racing experience with persistent ghost systems and dynamic weather.",
+  "homepage": "https://25-game-neon-highway.vercel.app/",
   "type": "module",
   "scripts": {
     "production": "npm run build && npm start",

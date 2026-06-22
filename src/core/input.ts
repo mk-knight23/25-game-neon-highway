@@ -113,7 +113,7 @@ class InputHandler {
     })
   }
 
-  private togglePause(): void {
+  public togglePause(): void {
     const current = gameState.getCurrentState()
     if (current === 'playing') {
       gameState.setGameState('paused')
@@ -137,6 +137,7 @@ class InputHandler {
       <div class="vc-cluster vc-steer">
         <button class="vc-btn vc-left" data-dir="left" aria-label="Steer left">◀</button>
         <button class="vc-btn vc-right" data-dir="right" aria-label="Steer right">▶</button>
+        <button class="vc-btn vc-pause" data-action="pause" aria-label="Pause game">II</button>
       </div>
       <div class="vc-cluster vc-drive">
         <button class="vc-btn vc-up" data-dir="up" aria-label="Accelerate">▲</button>
@@ -166,6 +167,13 @@ class InputHandler {
       btn.addEventListener('pointerleave', release)
       // Prevent the browser from firing synthetic mouse/scroll on touch.
       btn.addEventListener('contextmenu', (e) => e.preventDefault())
+    })
+
+    // Pause button (separate from directional inputs)
+    const pauseBtn = controls.querySelector('[data-action="pause"]')
+    pauseBtn?.addEventListener('pointerdown', (e) => {
+      e.preventDefault()
+      this.togglePause()
     })
 
     container.appendChild(controls)

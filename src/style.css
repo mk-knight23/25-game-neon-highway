@@ -834,6 +834,20 @@
     box-shadow: 0 0 30px rgba(0, 255, 128, 0.7);
 }
 
+.vc-pause {
+    width: 3rem;
+    height: 3rem;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    color: var(--color-primary, #8b5cf6);
+    border-color: rgba(124, 58, 237, 0.5);
+    background: rgba(124, 58, 237, 0.14);
+}
+
+.vc-steer {
+    align-items: flex-end;
+}
+
 /* Show on-screen controls only on devices without a fine pointer (touch) */
 @media (hover: none) and (pointer: coarse) {
     .virtual-controls {

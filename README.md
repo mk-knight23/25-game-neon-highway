@@ -1,108 +1,87 @@
-# 🚀 25-game-neon-highway (Collective Production Edition)
+# Neon Highway
 
-## 💎 Overview
-Fully production-grade implementation of 25-game-neon-highway, refactored by the **69-Agent Opencode Collective**.
+A cyber-noir, top-down arcade racing game. Dodge traffic, chain close-call
+combos, grab power-ups, and trigger nitro bursts through a neon-lit highway
+that cycles from day to night. Runs entirely in the browser on an HTML5
+canvas — no backend required to play.
 
-## 🛡️ Trust & Compliance
-- **CI/CD**: Automated GitHub Actions with Gitleaks security scans.
-- **Security**: Standardized [SECURITY.md](SECURITY.md) protocol.
-- **Design**: Opencode Premium Design Tokens integrated.
+## Gameplay
 
-## 🏁 48-Hour Roadmap
-1. Initialize infrastructure via `.github/workflows`.
-2. Set your secrets in GitHub Environment settings.
-3. Deploy to production via Vercel/Docker.
+- **Endless** — survive as long as possible; difficulty and speed ramp up.
+- **Time Trial** — score as much as you can in 2 minutes.
+- **Zen** — no enemies, just drive.
 
-![Evolution](https://img.shields.io/badge/Evolution-Live-brightgreen)
-![Phase 2](https://img.shields.io/badge/Phase-2-blue)
-![Score](https://img.shields.io/badge/Score-100%2F100-gold)
+High scores (per mode) and your settings (sound, theme) are saved to
+`localStorage` and restored on the next visit.
 
-Part of the **60-Repo Evolution Project**.
+## Controls
 
-## 📋 Evolution Status
+### Keyboard
 
-| Phase | Status | Repos |
-|-------|--------|-------|
-| Phase 1 | ✅ Complete | 01-20 |
-| Phase 2 | 🔄 Active | 21-40 |
-| Phase 3 | ⏳ Pending | 41-60 |
+| Key | Action |
+| --- | --- |
+| `←` `→` / `A` `D` | Steer left / right |
+| `↑` `↓` / `W` `S` | Accelerate / brake |
+| `Space` / `Shift` | Nitro boost |
+| `Esc` | Pause / resume |
 
-## 🛠️ Tech Stack
+Nitro drains an energy gauge; if you fully deplete it the nitro enters a
+cooldown lockout (shown in red on the HUD) until it recharges.
 
-- **Framework:** Modern stack
-- **CI/CD:** 24/7 Continuous Evolution
-- **Deployment:** Multi-platform
+### Touch
 
-## 📦 What's Included
+On touch devices, on-screen controls appear automatically: steering buttons
+and a pause button on the left, accelerate / brake / nitro on the right.
+Multiple buttons can be held at once. The canvas scales to fit the viewport
+while preserving its aspect ratio.
 
-- ✅ Professional README
-- ✅ Complete EVOLUTION.md
-- ✅ 5 LinkedIn posts
-- ✅ 2 video scripts  
-- ✅ Podcast script
-- ✅ Architecture docs
-- ✅ API documentation
-- ✅ GitHub Actions workflow
-- ✅ Multi-platform deployment configs
+## Tech stack
 
-## 🚀 Quick Start
+- **Vanilla TypeScript** — no UI framework
+- **HTML5 Canvas 2D** for all rendering
+- **Vite 6** for dev server and bundling
+- **Vitest** + jsdom for unit tests
+
+The game uses a fixed-timestep `requestAnimationFrame` loop. Source is
+organized into `core/` (loop, state, input, settings), `game/` (player,
+enemies, collision, difficulty, scoring, day/night, weather, combo, etc.),
+`renderer/` (canvas drawing) and `ui/` (HTML overlays).
+
+## Run, build, test
 
 ```bash
-git clone https://github.com/mk-knight23/25-game-neon-highway.git
-cd 25-game-neon-highway
-npm install
-npm run dev
+npm install      # install dependencies
+
+npm run dev      # start the dev server (http://localhost:5173)
+npm run build    # production build into dist/
+npm run preview  # preview the production build locally
+
+npm test         # run the unit tests (Vitest)
+npm run test:watch   # tests in watch mode
+npm run type-check   # TypeScript type checking, no emit
 ```
 
-## 📊 Evolution Metrics
+### Tests
 
-| Metric | Score |
-|--------|-------|
-| Documentation | 20/20 |
-| CI/CD | 20/20 |
-| Deployment | 20/20 |
-| Code Quality | 20/20 |
-| Security | 20/20 |
-| **Total** | **100/100** |
+Unit tests live in `tests/` and cover the pure game logic:
 
-## 🌐 Live URLs
+- `collision.test.ts` — AABB collision detection
+- `difficulty.test.ts` — difficulty / level progression
+- `scoring.test.ts` — scoring, multipliers, speed thresholds, levels
+- `dayNight.test.ts` — day/night tint interpolation
+- `settings.test.ts` — settings persistence round-trips
 
-| Platform | URL |
-|----------|-----|
-| Vercel | https://25-game-neon-highway.vercel.app |
-| Netlify | https://25-game-neon-highway.netlify.app |
-| Firebase | https://25-game-neon-highway.web.app |
+## Deploy
 
-## 📁 Structure
+The project builds to a static `dist/` directory and is configured for
+Vercel via `vercel.json` (framework: `vite`, output: `dist`, SPA rewrite).
+Any static host works — the Vite `base` is `./`, so the build is portable
+regardless of the deploy path.
 
-```
-├── .github/workflows/     # CI/CD workflows
-├── marketing/             # Marketing content
-│   ├── linkedin/         # 5 LinkedIn posts
-│   ├── videos/           # 2 video scripts
-│   └── audio/            # Podcast script
-├── docs/                 # Documentation
-│   ├── architecture/     # System design
-│   └── api/              # API docs
-├── vercel.json           # Vercel config
-├── netlify.toml          # Netlify config
-├── firebase.json         # Firebase config
-├── README.md             # This file
-└── EVOLUTION.md          # Evolution history
+```bash
+npm run build    # outputs to dist/
 ```
 
-## 📄 License
+## License
 
-MIT License
-
----
-
-🦾 **Evolved with OpenClaw** | 2026-03-06
-
-## Security
-
-This project follows security best practices:
-- No hardcoded credentials
-- Dependency scanning enabled
-- Security headers configured
-- Regular security audits performed
+MIT

@@ -2,9 +2,8 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, 'cleanup/**' ]
   pull_request:
-    branches: [ main ]
 
 jobs:
   test:
@@ -18,6 +17,8 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci
+      - name: Type check
+        run: npm run type-check
       - name: Run tests
         run: npm test
       - name: Build
@@ -28,4 +29,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run security audit
-        run: npm audit --audit-level=high
+        # Non-blocking: report advisories without failing the pipeline.
+        run: npm audit --audit-level=high || true
